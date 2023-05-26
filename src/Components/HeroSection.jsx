@@ -1,5 +1,3 @@
-import React from "react";
-
 const HeroSection = () => {
   return (
     <div className="hero min-h-screen bg-black bg-[url('./images/aa.jpeg')] w-full bg-no-repeat bg-center">
