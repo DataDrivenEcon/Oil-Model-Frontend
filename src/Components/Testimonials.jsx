@@ -77,9 +77,9 @@ const Testimonials = () => {
         {/* card end */}
       </div>
       <div className='flex justify-center items-center p-3 gap-5 my-8'>
-        <div className='w-5 h-5 rounded-2xl bg-[#696969] cursor-pointer'></div>
-        <div className='w-5 h-5 rounded-2xl bg-[#ffa500] cursor-pointer'></div>
-        <div className='w-5 h-5 rounded-2xl bg-[#696969] cursor-pointer'></div>
+        <div className='w-4 h-4 rounded-2xl bg-[#696969] cursor-pointer'></div>
+        <div className='w-4 h-4 rounded-2xl bg-[#ffa500] cursor-pointer'></div>
+        <div className='w-4 h-4 rounded-2xl bg-[#696969] cursor-pointer'></div>
       </div>
     </div>
   );
