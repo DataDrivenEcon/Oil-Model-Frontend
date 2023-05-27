@@ -1,112 +1,76 @@
 const KeyBenefits = () => {
   return (
-    <div className='p-8 bg-[#f3f3f3]'>
-      <h1 className='text-5xl text-center font-semibold mb-6 text-[#575F69]'>
-        Key Benefits{" "}
-      </h1>
-      <div className='container'>
-        <div className='flex flex-col md:grid grid-cols-12 text-gray-50'>
-          <div className='flex md:contents'>
-            <div className='col-start-2 col-end-4 mr-10 md:mx-auto relative'>
-              <div className='h-full w-6 flex items-center justify-center'>
-                <div className='h-full w-1 bg-green-500 pointer-events-none'></div>
-              </div>
-              <div className='w-6 h-6 absolute top-1/2 -mt-3 rounded-full bg-green-500 shadow text-center'>
-                <i className='fas fa-check-circle text-white'></i>
-              </div>
-            </div>
-            <div className='bg-green-500 col-start-4 col-end-12 p-4 rounded-xl my-4 mr-auto shadow-md w-full'>
-              <h3 className='font-semibold text-lg mb-1'>
-                Gain a Competitive Edge
-              </h3>
-              <p className='leading-tight text-justify w-full'>
-                Access exclusive and reliable data to gain a competitive edge in
-                the dynamic world of oil economics.{" "}
-              </p>
+    <div className="py-28 bg-[#00000073]">
+      <div className="container mx-[7.5%]  max-w-5xl px-4 py-12 ">
+        <div className="grid gap-4 mx-4 sm:grid-cols-12">
+          <div className="col-span-12 sm:col-span-3">
+            <div className="text-center sm:text-left mb-14 before:block before:w-24 before:h-3 before:mb-5 before:rounded-md before:mx-auto sm:before:mx-0 before:dark:bg-[#ffa500]">
+              <h3 className="text-3xl font-semibold text-white">Key Benefits </h3>
+              <span className="text-sm font-bold tracking-wider uppercase dark:text-gray-400">
+                Of our products!!
+              </span>
             </div>
           </div>
+          <div className="relative col-span-12 px-4 space-y-6 sm:col-span-9">
+            <div className="col-span-12 space-y-12 relative px-4 sm:col-span-8 sm:space-y-8 sm:before:absolute sm:before:top-2 sm:before:bottom-0 sm:before:w-0.5 sm:before:-left-3 before:dark:bg-gray-700">
+              <div className="flex flex-col sm:relative sm:before:absolute sm:before:top-2 sm:before:w-4 sm:before:h-4 sm:before:rounded-full sm:before:left-[-35px] sm:before:z-[1] before:dark:bg-[#ffa500]">
+                <h3 className="text-xl font-semibold tracking-wide text-white">
+                  Gain a Competitive Edge
+                </h3>
 
-          <div className='flex md:contents'>
-            <div className='col-start-2 col-end-4 mr-10 md:mx-auto relative'>
-              <div className='h-full w-6 flex items-center justify-center'>
-                <div className='h-full w-1 bg-green-500 pointer-events-none'></div>
+                <p className="mt-3 text-[#e2e2e2d3]">
+                  Access exclusive and reliable data to gain a competitive edge
+                  in the dynamic world of oil economics.{" "}
+                </p>
               </div>
-              <div className='w-6 h-6 absolute top-1/2 -mt-3 rounded-full bg-green-500 shadow text-center'>
-                <i className='fas fa-check-circle text-white'></i>
-              </div>
-            </div>
-            <div className='bg-green-500 col-start-4 col-end-12 p-4 rounded-xl my-4 mr-auto shadow-md w-full'>
-              <h3 className='font-semibold text-lg mb-1'>
-                Make Informed Decisions
-              </h3>
-              <p className='leading-tight text-justify'>
-                Leverage our comprehensive data sets to make strategic decisions
-                based on accurate and up-to-date information.{" "}
-              </p>
-            </div>
-          </div>
+              <div className="flex flex-col sm:relative sm:before:absolute sm:before:top-2 sm:before:w-4 sm:before:h-4 sm:before:rounded-full sm:before:left-[-35px] sm:before:z-[1] before:dark:bg-[#ffa500]">
+                <h3 className="text-xl font-semibold tracking-wide text-white">
+                  Make Informed Decisions
+                </h3>
 
-          <div className='flex md:contents'>
-            <div className='col-start-2 col-end-4 mr-10 md:mx-auto relative'>
-              <div className='h-full w-6 flex items-center justify-center'>
-                <div className='h-full w-1 bg-green-500 pointer-events-none'></div>
+                 <p className="mt-3 text-[#e2e2e2d3]">
+                  Leverage our comprehensive data sets to make strategic
+                  decisions based on accurate and up-to-date information.{" "}
+                </p>
               </div>
-              <div className='w-6 h-6 absolute top-1/2 -mt-3 rounded-full bg-green-500 shadow text-center'>
-                <i className='fas fa-times-circle text-white'></i>
+              <div className="flex flex-col sm:relative sm:before:absolute sm:before:top-2 sm:before:w-4 sm:before:h-4 sm:before:rounded-full sm:before:left-[-35px] sm:before:z-[1] before:dark:bg-[#ffa500]">
+                <h3 className="text-xl font-semibold tracking-wide text-white">
+                  Save Time and Effort
+                </h3>
+
+                 <p className="mt-3 text-[#e2e2e2d3]">
+                  Avoid spending hours collecting and analyzing data - our
+                  ready-to-use data products are designed to save you time and
+                  effort.{" "}
+                </p>
               </div>
-            </div>
-            <div className='bg-green-500 col-start-4 col-end-12 p-4 rounded-xl my-4 mr-auto shadow-md w-full'>
-              <h3 className='font-semibold text-lg mb-1 text-gray-50'>
-                Save Time and Effort
-              </h3>
-              <p className='leading-tight text-justify'>
-                Avoid spending hours collecting and analyzing data - our
-                ready-to-use data products are designed to save you time and
-                effort.{" "}
-              </p>
-            </div>
-          </div>
-          {/* ......................  */}
-          <div className='flex md:contents'>
-            <div className='col-start-2 col-end-4 mr-10 md:mx-auto relative'>
-              <div className='h-full w-6 flex items-center justify-center'>
-                <div className='h-full w-1 bg-green-500 pointer-events-none'></div>
+              <div className="flex flex-col sm:relative sm:before:absolute sm:before:top-2 sm:before:w-4 sm:before:h-4 sm:before:rounded-full sm:before:left-[-35px] sm:before:z-[1] before:dark:bg-[#ffa500]">
+                <h3 className="text-xl font-semibold tracking-wide text-white">
+                  Expert Support
+                </h3>
+
+                 <p className="mt-3 text-[#e2e2e2d3]">
+                  Avoid spending hours collecting and analyzing data - our
+                  ready-to-use data products are designed to save you time and
+                  effort.{" "}
+                </p>
               </div>
-              <div className='w-6 h-6 absolute top-1/2 -mt-3 rounded-full bg-green-500 shadow text-center'>
-                <i className='fas fa-check-circle text-white'></i>
+              <div className="flex flex-col sm:relative sm:before:absolute sm:before:top-2 sm:before:w-4 sm:before:h-4 sm:before:rounded-full sm:before:left-[-35px] sm:before:z-[1] before:dark:bg-[#ffa500]">
+                <h3 className="text-xl font-semibold tracking-wide text-white">
+                  Drive Efficiency and Profitability{" "}
+                </h3>
+
+                 <p className="mt-3 text-[#e2e2e2d3]">
+                  Optimize your operations, improve profitability, and achieve
+                  your business goals with our powerful insights.
+                </p>
               </div>
-            </div>
-            <div className='bg-green-500 col-start-4 col-end-12 p-4 rounded-xl my-4 mr-auto shadow-md w-full'>
-              <h3 className='font-semibold text-lg mb-1'>Expert Support </h3>
-              <p className='leading-tight text-justify w-full'>
-                Our dedicated team of oil economics experts is always available
-                to provide guidance, answer your questions, and ensure you get
-                the most out of our data.
-              </p>
-            </div>
-          </div>
-          <div className='flex md:contents'>
-            <div className='col-start-2 col-end-4 mr-10 md:mx-auto relative'>
-              <div className='h-full w-6 flex items-center justify-center'>
-                <div className='h-full w-1 bg-green-500 pointer-events-none'></div>
-              </div>
-              <div className='w-6 h-6 absolute top-1/2 -mt-3 rounded-full bg-green-500 shadow text-center'>
-                <i className='fas fa-check-circle text-white'></i>
-              </div>
-            </div>
-            <div className='bg-green-500 col-start-4 col-end-12 p-4 rounded-xl my-4 mr-auto shadow-md w-full'>
-              <h3 className='font-semibold text-lg mb-1'>
-                Drive Efficiency and Profitability{" "}
-              </h3>
-              <p className='leading-tight text-justify w-full'>
-                Optimize your operations, improve profitability, and achieve
-                your business goals with our powerful insights.
-              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
+    
   );
 };
 

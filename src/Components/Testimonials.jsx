@@ -1,7 +1,7 @@
 const Testimonials = () => {
   return (
     <>
-      <div className="min-w-screen min-h-screenflex items-center justify-center py-5">
+      <div className="min-w-screen min-h-screenflex items-center justify-center py-5 bg-[#e4e4e4da]">
         <div className="w-full px-5 py-16 md:py-24 text-gray-800">
           <div className="w-full max-w-6xl mx-auto">
             <div className="text-center max-w-xl mx-auto">

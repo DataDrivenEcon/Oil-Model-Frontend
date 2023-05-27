@@ -3,7 +3,7 @@
 // import { BsYoutube } from "react-icons/bs";
 const AboutUs = () => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center bg-[#e4e4e4da]">
       <div className="pb-24">
         <h1 className="text-5xl text-[#575F69] text-center py-16">About Me</h1>
         <div className="max-w-4xl flex items-center h-auto flex-wrap mx-auto lg:my-0">
