@@ -1,7 +1,7 @@
 const KeyBenefits = () => {
   return (
-    <div className='p-4 mt-4'>
-      <h1 className='text-5xl text-center font-semibold mb-6 text-[#ffa500]'>
+    <div className='p-8 bg-[#f3f3f3]'>
+      <h1 className='text-5xl text-center font-semibold mb-6 text-[#575F69]'>
         Key Benefits{" "}
       </h1>
       <div className='container'>

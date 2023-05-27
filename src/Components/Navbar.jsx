@@ -1,6 +1,6 @@
 const Navbar = () => {
   return (
-    <header className='bg-neutral sticky top-0 z-50'>
+    <header className='bg-transparent pt-5'>
       <nav className='mx-[7.5%]'>
         <div className='navbar'>
           <div className='flex-1'>
