@@ -1,7 +1,7 @@
 import Navbar from "./Navbar.jsx";
 const HeroSection = () => {
   return (
-    <div className="bg-[url('../../public/images/Home.png')] w-full bg-no-repeat bg-center bg-cover">
+    <div className="bg-[url('./images/Home.png')] w-full bg-no-repeat bg-center bg-cover">
       <Navbar />
 
       <div className='mx-[7.5%]'>

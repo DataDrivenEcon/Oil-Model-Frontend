@@ -4,7 +4,7 @@ import { BsTelephoneFill } from "react-icons/bs";
 import { HiOutlineMail } from "react-icons/hi";
 const ContactUs = () => {
   return (
-    <div className="hero min-h-[85vh] bg-[url('../../public/images/contact-bg.png')] w-full bg-no-repeat bg-center">
+    <div className="hero min-h-[85vh] bg-[url('./images/contact-bg.png')] w-full bg-no-repeat bg-center">
       {/* <h1 className='text-5xl text-[#ffa500] underline-'>Contact Us!</h1> */}
       <div className='hero-content flex-col lg:flex-row-reverse'>
         <div className='card flex-shrink-0 w-full max-w-xl '>
