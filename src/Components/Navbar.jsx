@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Navbar = () => {
   return (
     <header className="bg-transparent pt-5">
@@ -22,7 +24,7 @@ const Navbar = () => {
                 <a>Testimonials</a>
               </li>
               <li className="border-1 border-[#ffa500] font-inter font-semibold text-white capitalize cursor-pointer btn btn-outline hover:bg-[#ffa500]">
-                <a>Log in</a>
+                <Link to="/login">Log in</Link>
               </li>
             </ul>
           </div>
