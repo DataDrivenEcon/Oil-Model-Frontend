@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-
-const LogIn = () => {
+const SignUp = () => {
   return (
     <div className='flex flex-col md:flex-row h-screen items-center'>
       <div
@@ -12,12 +11,22 @@ const LogIn = () => {
           <Link to={"/"} className='text-3xl font-inter font-semibold'>
             Brand Name
           </Link>
-          <h1 className='text-xl md:text-2xl font-bold leading-tight mt-12'>
+          <h1 className='text-xl md:text-2xl font-bold leading-tight mt-2'>
             Log in to your account
           </h1>
 
-          <form className='mt-6'>
+          <form className='mt-2'>
             <div>
+              <label className='block text-gray-700'>Full Name</label>
+              <input
+                type='text'
+                name=''
+                placeholder='Enter Full Name'
+                className='w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none'
+                required
+              />
+            </div>
+            <div className='mt-2'>
               <label className='block text-gray-700'>Email Address</label>
               <input
                 type='email'
@@ -28,7 +37,7 @@ const LogIn = () => {
               />
             </div>
 
-            <div className='mt-4'>
+            <div className='mt-2'>
               <label className='block text-gray-700'>Password</label>
               <input
                 type='password'
@@ -41,21 +50,25 @@ const LogIn = () => {
               />
             </div>
 
-            <div className='text-right mt-2'>
-              <a
-                href='#'
-                className='text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700'
-              >
-                Forgot Password?
-              </a>
+            <div className='mt-2'>
+              <label className='block text-gray-700'>Confirm Password</label>
+              <input
+                type='password'
+                name=''
+                id=''
+                placeholder='Enter Confirm Password'
+                className='w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
+                focus:bg-white focus:outline-none'
+                required
+              />
             </div>
 
             <button
               type='submit'
               className='w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 text-white font-semibold rounded-lg
-              px-4 py-3 mt-6'
+              px-4 py-3 mt-4'
             >
-              Log In
+              Sign Up
             </button>
           </form>
 
@@ -67,17 +80,17 @@ const LogIn = () => {
           >
             <div className='flex items-center justify-center'>
               <FcGoogle className='w-6 h-6' />
-              <span className='ml-4'>Log in with Google</span>
+              <span className='ml-4'>Sing Up with Google</span>
             </div>
           </button>
 
           <p className='mt-8 text-center'>
-            Need an account?{" "}
+            Already have an account please?{" "}
             <Link
-              to={"/signup"}
+              to={"/login"}
               className='text-blue-500 hover:text-blue-700 font-semibold'
             >
-              Create an account
+              Log in
             </Link>
           </p>
         </div>
@@ -92,4 +105,4 @@ const LogIn = () => {
     </div>
   );
 };
-export default LogIn;
+export default SignUp;
