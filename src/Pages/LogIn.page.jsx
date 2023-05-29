@@ -8,8 +8,7 @@ import {
 import auth from "../firebase.init";
 import Loading from "../Components/Loading";
 import { toast } from "react-toastify";
-import { useState } from "react";
-import { space } from "postcss/lib/list";
+import { useEffect, useState } from "react";
 
 const LogIn = () => {
   const navigate = useNavigate();
@@ -30,15 +29,17 @@ const LogIn = () => {
     signInWithEmailAndPassword(email, password);
   };
 
-  if (loginError) {
-    if (loginError?.message === "Firebase: Error (auth/user-not-found).") {
-      setErrorMessage("user not found");
-    } else if (
-      loginError?.message === "Firebase: Error (auth/wrong-password)."
-    ) {
-      setErrorMessage("wrong password");
+  useEffect(() => {
+    if (loginError) {
+      if (loginError?.message === "Firebase: Error (auth/user-not-found).") {
+        setErrorMessage("user not found");
+      } else if (
+        loginError?.message === "Firebase: Error (auth/wrong-password)."
+      ) {
+        setErrorMessage("wrong password");
+      }
     }
-  }
+  }, [loginError]);
 
   if (loading || loginLoading) {
     <Loading></Loading>;
@@ -111,12 +112,12 @@ const LogIn = () => {
             </div>
 
             <div className='text-right mt-2'>
-              <a
-                href='#'
+              <Link
+                to='/forgot-password'
                 className='text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700'
               >
                 Forgot Password?
-              </a>
+              </Link>
             </div>
 
             <button
