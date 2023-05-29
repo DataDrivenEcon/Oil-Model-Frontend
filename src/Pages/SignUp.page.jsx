@@ -1,15 +1,51 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
+import {
+  useSignInWithGoogle,
+  useCreateUserWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
+import auth from "../firebase.init";
+import Loading from "../Components/Loading";
+import { toast } from "react-toastify";
 const SignUp = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  let from = location.state?.from?.pathname || "/";
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
-  console.log(errors.confirmPassword);
-  const onSubmit = (data) => console.log(data);
+  const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+  const [createUserWithEmailAndPassword, createUser, createLoading] =
+    useCreateUserWithEmailAndPassword(auth);
+
+  const onSubmit = ({ email, password }) => {
+    createUserWithEmailAndPassword(email, password);
+  };
+  if (loading || createLoading) {
+    <Loading></Loading>;
+  }
+
+  if (user || createUser) {
+    navigate(from, { replace: true });
+  }
+  if (error) {
+    toast.error(`${error.message}`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      toastId: "error1",
+    });
+  }
+
   return (
     <div className='flex flex-col md:flex-row h-screen items-center'>
       <div
@@ -105,6 +141,7 @@ const SignUp = () => {
           <hr className='my-6 border-gray-300 w-full' />
 
           <button
+            onClick={() => signInWithGoogle()}
             type='button'
             className='w-full block bg-white hover:bg-gray-100 focus:bg-gray-100 text-gray-900 font-semibold rounded-lg px-4 py-3 border border-gray-300'
           >

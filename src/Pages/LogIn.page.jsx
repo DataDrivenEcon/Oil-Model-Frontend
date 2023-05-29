@@ -1,16 +1,64 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
+import {
+  useSignInWithGoogle,
+  useSignInWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
+import auth from "../firebase.init";
+import Loading from "../Components/Loading";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import { space } from "postcss/lib/list";
 
 const LogIn = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  let from = location.state?.from?.pathname || "/";
+  const [errorMessage, setErrorMessage] = useState("");
+  const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+  const [signInWithEmailAndPassword, loginUser, loginLoading, loginError] =
+    useSignInWithEmailAndPassword(auth);
   const {
     register,
     handleSubmit,
 
     formState: { errors },
   } = useForm();
-  console.log(errors.password?.type);
-  const onSubmit = (data) => console.log(data);
+
+  const onSubmit = ({ email, password }) => {
+    signInWithEmailAndPassword(email, password);
+  };
+
+  if (loginError) {
+    if (loginError?.message === "Firebase: Error (auth/user-not-found).") {
+      setErrorMessage("user not found");
+    } else if (
+      loginError?.message === "Firebase: Error (auth/wrong-password)."
+    ) {
+      setErrorMessage("wrong password");
+    }
+  }
+
+  if (loading || loginLoading) {
+    <Loading></Loading>;
+  }
+  if (user || loginUser) {
+    navigate(from, { replace: true });
+  }
+  if (error) {
+    toast.error(`${error.message}`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      toastId: "error2",
+    });
+  }
 
   return (
     <div className='flex flex-col md:flex-row h-screen items-center'>
@@ -38,6 +86,9 @@ const LogIn = () => {
               {errors.email && (
                 <span className='text-red-400 mt-1'>Email is required</span>
               )}
+              {errorMessage === "user not found" && (
+                <span className='text-red-500'>{errorMessage}</span>
+              )}
             </div>
 
             <div className='mt-4'>
@@ -53,6 +104,9 @@ const LogIn = () => {
               />
               {errors.password && (
                 <span className='text-red-400 mt-1'>Passowrd is required</span>
+              )}
+              {errorMessage === "wrong password" && (
+                <span className='text-red-500'>{errorMessage}</span>
               )}
             </div>
 
@@ -77,6 +131,7 @@ const LogIn = () => {
           <hr className='my-6 border-gray-300 w-full' />
 
           <button
+            onClick={() => signInWithGoogle()}
             type='button'
             className='w-full block bg-white hover:bg-gray-100 focus:bg-gray-100 text-gray-900 font-semibold rounded-lg px-4 py-3 border border-gray-300'
           >
