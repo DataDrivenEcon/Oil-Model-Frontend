@@ -1,7 +1,17 @@
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { useForm } from "react-hook-form";
 
 const LogIn = () => {
+  const {
+    register,
+    handleSubmit,
+
+    formState: { errors },
+  } = useForm();
+  console.log(errors.password?.type);
+  const onSubmit = (data) => console.log(data);
+
   return (
     <div className='flex flex-col md:flex-row h-screen items-center'>
       <div
@@ -16,29 +26,34 @@ const LogIn = () => {
             Log in to your account
           </h1>
 
-          <form className='mt-6'>
+          <form className='mt-6' onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label className='block text-gray-700'>Email Address</label>
               <input
                 type='email'
-                name=''
+                {...register("email", { required: true })}
                 placeholder='Enter Email Address'
                 className='w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none'
-                required
               />
+              {errors.email && (
+                <span className='text-red-400 mt-1'>Email is required</span>
+              )}
             </div>
 
             <div className='mt-4'>
               <label className='block text-gray-700'>Password</label>
               <input
                 type='password'
-                name=''
-                id=''
+                {...register("password", {
+                  required: true,
+                })}
                 placeholder='Enter Password'
                 className='w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
                 focus:bg-white focus:outline-none'
-                required
               />
+              {errors.password && (
+                <span className='text-red-400 mt-1'>Passowrd is required</span>
+              )}
             </div>
 
             <div className='text-right mt-2'>

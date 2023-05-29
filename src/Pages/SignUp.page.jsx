@@ -1,6 +1,15 @@
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { useForm } from "react-hook-form";
 const SignUp = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  console.log(errors.confirmPassword);
+  const onSubmit = (data) => console.log(data);
   return (
     <div className='flex flex-col md:flex-row h-screen items-center'>
       <div
@@ -15,52 +24,73 @@ const SignUp = () => {
             Log in to your account
           </h1>
 
-          <form className='mt-2'>
+          <form className='mt-2' onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label className='block text-gray-700'>Full Name</label>
               <input
                 type='text'
-                name=''
                 placeholder='Enter Full Name'
+                {...register("fullName", { required: true })}
                 className='w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none'
-                required
               />
+              {errors.fullName && (
+                <span className='text-red-400 mt-1'>Full Name is required</span>
+              )}
             </div>
             <div className='mt-2'>
               <label className='block text-gray-700'>Email Address</label>
               <input
                 type='email'
-                name=''
+                {...register("email", { required: true })}
                 placeholder='Enter Email Address'
                 className='w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none'
-                required
               />
+              {errors.email && (
+                <span className='text-red-400 mt-1'>Email is required</span>
+              )}
             </div>
 
             <div className='mt-2'>
               <label className='block text-gray-700'>Password</label>
               <input
                 type='password'
-                name=''
-                id=''
                 placeholder='Enter Password'
+                {...register("password", {
+                  required: true,
+                  pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).+$/,
+                })}
                 className='w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
                 focus:bg-white focus:outline-none'
-                required
               />
+              {errors.password && (
+                <span className='text-red-400 mt-1'>
+                  Invalid Password (8-16 characters, a-z, A-Z, 0-9, and special
+                  character required)
+                </span>
+              )}
             </div>
 
             <div className='mt-2'>
               <label className='block text-gray-700'>Confirm Password</label>
               <input
                 type='password'
-                name=''
-                id=''
+                {...register("confirmPassword", {
+                  required: true,
+                  validate: (val) => {
+                    if (watch("password") != val) {
+                      return "Your passwords do no match";
+                    }
+                  },
+                })}
                 placeholder='Enter Confirm Password'
                 className='w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
                 focus:bg-white focus:outline-none'
-                required
               />
+              {errors?.confirmPassword && (
+                <span className='text-red-400 mt-1'>
+                  {errors?.confirmPassword?.message}
+                </span>
+              )}
             </div>
 
             <button
