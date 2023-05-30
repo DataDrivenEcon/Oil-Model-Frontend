@@ -1,6 +1,7 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
 const DashboardNav = () => {
   const [user] = useAuthState(auth);
 
@@ -24,16 +25,7 @@ const DashboardNav = () => {
                 tabIndex={0}
                 className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52'
               >
-                <li>
-                  <a className='justify-between'>
-                    Profile
-                    <span className='badge'>New</span>
-                  </a>
-                </li>
-                <li>
-                  <a>Settings</a>
-                </li>
-                <li>
+                <li onClick={() => signOut(auth)}>
                   <a>Logout</a>
                 </li>
               </ul>
