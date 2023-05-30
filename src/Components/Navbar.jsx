@@ -5,7 +5,7 @@ import { signOut } from "firebase/auth";
 
 const Navbar = () => {
   const [user] = useAuthState(auth);
-
+  console.log(user?.photoURL);
   return (
     <header className='bg-transparent pt-5'>
       <nav className='mx-[7.5%]'>
@@ -40,7 +40,7 @@ const Navbar = () => {
                     className='btn btn-ghost btn-circle avatar'
                   >
                     <div className='w-10 rounded-full'>
-                      <img src={user.photoURL} />
+                      <img src={user?.photoURL} />
                     </div>
                   </label>
                   <ul

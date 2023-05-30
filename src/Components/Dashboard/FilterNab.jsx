@@ -16,7 +16,9 @@ const FilterNab = () => {
               />
             </svg>
             <select className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'>
-              <option>Select region</option>
+              <option selected disabled>
+                Select region
+              </option>
               <option>Us</option>
               <option>Germany</option>
             </select>
@@ -35,7 +37,9 @@ const FilterNab = () => {
               />
             </svg>
             <select className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'>
-              <option>Select subregion</option>
+              <option selected disabled>
+                Select subregion
+              </option>
               <option>California</option>
               <option>Texas</option>
               <option>Florida</option>
@@ -56,7 +60,9 @@ const FilterNab = () => {
               />
             </svg>
             <select className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'>
-              <option>VMT/Mobility</option>
+              <option selected disabled>
+                VMT/Mobility
+              </option>
               <option>VMT</option>
               <option>Mobilty</option>
             </select>
@@ -76,7 +82,9 @@ const FilterNab = () => {
               />
             </svg>
             <select className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'>
-              <option>Monthly/Weekly</option>
+              <option selected disabled>
+                Monthly/Weekly
+              </option>
               <option>Monthly</option>
               <option>Weekly</option>
             </select>
@@ -95,7 +103,9 @@ const FilterNab = () => {
               />
             </svg>
             <select className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'>
-              <option>Select categories</option>
+              <option selected disabled>
+                Select categories
+              </option>
               <option>Retail and Recreation</option>
               <option>Blue</option>
             </select>
