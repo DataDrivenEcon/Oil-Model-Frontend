@@ -1,6 +1,9 @@
 const KeyBenefits = () => {
   return (
-    <div className='py-28 bg-[#00000073]'>
+    <div
+      id='KeyBenefits'
+      className='py-28 bg-gradient-to-b from-gray-900 to-gray-600 bg-gradient-to-r'
+    >
       <div className='container mx-[7.5%]  max-w-5xl px-4 py-12 '>
         <div className='grid gap-4 mx-4 sm:grid-cols-12'>
           <div className='col-span-12 sm:col-span-3'>

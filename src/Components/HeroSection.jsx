@@ -7,7 +7,10 @@ const HeroSection = () => {
     fadeUpText.classList.add("animate-fadeUp");
   }, []);
   return (
-    <div className="bg-[url('/images/Home.png')] w-full bg-no-repeat bg-center bg-cover">
+    <div
+      id='heroSection'
+      className="bg-[url('/images/Home.png')] w-full bg-no-repeat bg-center bg-cover"
+    >
       <Navbar />
 
       <div className='mx-[7.5%]'>

@@ -18,17 +18,20 @@ const Navbar = () => {
           <div className='flex-none'>
             <ul className='gap-10 items-center menu-horizontal px-1'>
               <li className='font-inter font-semibold text-white capitalize cursor-pointer'>
-                <a>Home</a>
+                <a href='#heroSection'>Home</a>
               </li>
               <li className='font-inter font-semibold text-white capitalize cursor-pointer'>
-                <a>About</a>
+                <a href='#KeyBenefits'>Key Benefits</a>
+              </li>
+              <li className='font-inter font-semibold text-white capitalize cursor-pointer'>
+                <a href='#about'>About</a>
               </li>
 
               <li className='font-inter font-semibold text-white capitalize cursor-pointer'>
-                <a>Contact</a>
+                <a href='#contact'>Contact</a>
               </li>
               <li className='font-inter font-semibold text-white capitalize cursor-pointer'>
-                <a>Testimonials</a>
+                <a href='#Testimonials'>Testimonials</a>
               </li>
               {user ? (
                 <div className='dropdown dropdown-end'>
@@ -37,7 +40,7 @@ const Navbar = () => {
                     className='btn btn-ghost btn-circle avatar'
                   >
                     <div className='w-10 rounded-full'>
-                      <img src='./images/team5-2.jpg' />
+                      <img src={user.photoURL} />
                     </div>
                   </label>
                   <ul
@@ -45,7 +48,7 @@ const Navbar = () => {
                     className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52'
                   >
                     <li>
-                      <Link to={"/dashboard"}>Dashboard</Link>
+                      <Link to={"/mobility-data"}>Mobility Data</Link>
                     </li>
                     {!user.emailVerified && (
                       <li>

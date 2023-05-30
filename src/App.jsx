@@ -18,7 +18,7 @@ function App() {
         <Route path='/forgot-password' element={<ForgotPassword />}></Route>
         <Route path='/verify-email' element={<EmailVerification />}></Route>
         <Route
-          path='/dashboard'
+          path='/mobility-data'
           element={
             <RequireAuth>
               <Dashboard />
