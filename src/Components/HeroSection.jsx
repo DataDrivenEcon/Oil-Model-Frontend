@@ -1,5 +1,11 @@
+import { useEffect } from "react";
 import Navbar from "./Navbar.jsx";
+import "../style/heroSection.css";
 const HeroSection = () => {
+  useEffect(() => {
+    const fadeUpText = document.getElementById("fadeUpText");
+    fadeUpText.classList.add("animate-fadeUp");
+  }, []);
   return (
     <div className="bg-[url('/images/Home.png')] w-full bg-no-repeat bg-center bg-cover">
       <Navbar />
@@ -10,7 +16,10 @@ const HeroSection = () => {
             <div>
               <h1 className='text-7xl font-bold text-white'>
                 Leverage Your Expertise with Premium <br />
-                <span className='text-[#ffa500]'>Oil Economics</span> Data.
+                <span id='fadeUpText' className='text-[#ffa500]'>
+                  Oil Economics
+                </span>{" "}
+                Data.
               </h1>
               <p className='py-4 text-white text-[18px]'>
                 Welcome to OilData Solutions, the premier platform for unlocking

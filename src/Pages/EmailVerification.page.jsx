@@ -5,7 +5,7 @@ import {
 import auth from "../firebase.init";
 import Loading from "../Components/Loading";
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const EmailVerification = () => {
   const navigate = useNavigate();
