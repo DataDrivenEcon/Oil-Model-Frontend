@@ -1,4 +1,4 @@
-const VmtTable = ({ allData, getSubregion }) => {
+const VmtTable = ({ allData, getSubregion, getDate }) => {
   const initDatas = allData.map((d) => d.data);
   const datas = getSubregion === "California" ? initDatas[0] : initDatas[1];
 
@@ -19,15 +19,25 @@ const VmtTable = ({ allData, getSubregion }) => {
             </tr>
           </thead>
           <tbody>
-            {datas?.map((data, i) => (
-              <tr key={i}>
-                <th>{data.name}</th>
-                <td>{data.pv * 9}</td>
-                <td>{data.pv * 6}</td>
-                <td>{data.pv * 4}</td>
-                <td>{data.pv * 8}</td>
-              </tr>
-            ))}
+            {getDate === "Monthly"
+              ? datas?.map((data, i) => (
+                  <tr key={i}>
+                    <th>{data.name}</th>
+                    <td>{data.uv}</td>
+                    <td>{data.uv * 2}</td>
+                    <td>{data.uv * 3}</td>
+                    <td>{data.uv * 4}</td>
+                  </tr>
+                ))
+              : datas?.map((data, i) => (
+                  <tr key={i}>
+                    <th>{data.name}</th>
+                    <td>{Math.floor(data.uv / 1.4)}</td>
+                    <td>{Math.floor(data.uv / 3.8)}</td>
+                    <td>{Math.floor(data.uv / 9.1)}</td>
+                    <td>{Math.floor(data.uv / 7)}</td>
+                  </tr>
+                ))}
           </tbody>
         </table>
       </div>

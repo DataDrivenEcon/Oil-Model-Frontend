@@ -1,4 +1,13 @@
-const FilterNab = ({ setGetSubregion }) => {
+import { useState } from "react";
+
+const FilterNab = ({ setGetSubregion, setGetDate }) => {
+  const [getRegion, setGetRegion] = useState(false);
+  const region = [
+    { region: "Us", subRegion: ["California", "Texas"] },
+    { region: "Ger", subRegion: ["Berline", "Munich"] },
+  ];
+  const filterRegion = region.find((r) => r.region === getRegion);
+
   return (
     <div className='w-full mt-2'>
       <div className='flex mx-[2%] justify-between items-center'>
@@ -15,11 +24,15 @@ const FilterNab = ({ setGetSubregion }) => {
                 fillRule='nonzero'
               />
             </svg>
-            <select className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'>
+            <select
+              onChange={(e) => setGetRegion(e.target.value)}
+              className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
+            >
               <option selected disabled>
                 Select region
               </option>
               <option>Us</option>
+              <option>Ger</option>
             </select>
           </div>
           {/* 2222 */}
@@ -36,19 +49,18 @@ const FilterNab = ({ setGetSubregion }) => {
               />
             </svg>
             <select
+              disabled={getRegion ? false : true}
               onChange={(e) => setGetSubregion(e.target.value)}
               className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
             >
-              <option selected disabled>
+              <option selected={getRegion ? false : true} disabled>
                 Select subregion
               </option>
-              <option>California</option>
-              <option>Texas</option>
+              {filterRegion?.subRegion?.map((r, i) => (
+                <option key={i}>{r}</option>
+              ))}
             </select>
           </div>
-        </div>
-
-        <div className='flex gap-4'>
           <div className='relative inline-flex'>
             <svg
               className='w-2 h-2 absolute top-0 right-0 m-4 pointer-events-none'
@@ -61,14 +73,18 @@ const FilterNab = ({ setGetSubregion }) => {
                 fillRule='nonzero'
               />
             </svg>
-            <select className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'>
-              <option selected disabled>
-                Monthly/Weekly
-              </option>
-              <option>Monthly</option>
+            <select
+              onChange={(e) => setGetDate(e.target.value)}
+              className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
+            >
+              <option disabled>Monthly/Weekly</option>
+              <option defaultValue={"Monthly"}>Monthly</option>
               <option>Weekly</option>
             </select>
           </div>
+        </div>
+
+        <div className='flex gap-4'>
           {/* 2222 */}
           <div className='relative inline-flex'>
             <svg
@@ -83,10 +99,10 @@ const FilterNab = ({ setGetSubregion }) => {
               />
             </svg>
             <select className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'>
-              <option selected disabled>
-                Select categories
+              <option disabled>Select categories</option>
+              <option defaultValue={"Retail and Recreation"}>
+                Retail and Recreation
               </option>
-              <option>Retail and Recreation</option>
               <option>Blue</option>
             </select>
           </div>
