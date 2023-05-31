@@ -1,11 +1,11 @@
-const Table = ({ allData, getSubregion }) => {
+const VmtTable = ({ allData, getSubregion }) => {
   const initDatas = allData.map((d) => d.data);
   const datas = getSubregion === "California" ? initDatas[0] : initDatas[1];
 
   return (
     <div className='w-full shadow-lg py-2'>
       <p className='pb-2 pl-2 font-semibold text-[#5e676293] '>
-        retail and recreation % change from baseline table-Mobility
+        retail and recreation % change from baseline table-VMT
       </p>
       <div className='overflow-x-auto overflow-y-auto max-h-[250px]'>
         <table className='table w-full'>
@@ -22,10 +22,10 @@ const Table = ({ allData, getSubregion }) => {
             {datas?.map((data, i) => (
               <tr key={i}>
                 <th>{data.name}</th>
-                <td>{data.uv}</td>
-                <td>{data.uv * 2}</td>
-                <td>{data.uv * 3}</td>
-                <td>{data.uv * 4}</td>
+                <td>{data.pv * 9}</td>
+                <td>{data.pv * 6}</td>
+                <td>{data.pv * 4}</td>
+                <td>{data.pv * 8}</td>
               </tr>
             ))}
           </tbody>
@@ -35,4 +35,4 @@ const Table = ({ allData, getSubregion }) => {
   );
 };
 
-export default Table;
+export default VmtTable;
