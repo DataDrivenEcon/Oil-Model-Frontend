@@ -19,22 +19,18 @@ const Dashboard = () => {
   return (
     <div className='w-screen bg-gradient-to-r '>
       <DashboardNav />
-      <div className='mt-1'>
-        <div className='flex gap-5 items-center mx-[2%]'>
-          <Chart
-            allData={allData}
-            getSubregion={getSubregion}
-            getDate={getDate}
-          ></Chart>
-          <Table
-            allData={allData}
-            getSubregion={getSubregion}
-            getDate={getDate}
-          ></Table>
+      <FilterNab setGetDate={setGetDate} setGetSubregion={setGetSubregion} />
+      <div>
+        <div className='mx-[2%]'>
+          <Chart allData={allData} getSubregion={getSubregion}></Chart>
         </div>
       </div>
-      <FilterNab setGetDate={setGetDate} setGetSubregion={setGetSubregion} />
-      <div className='mx-[2%]'>
+      <div className='flex gap-5 items-center mx-[2%]'>
+        <Table
+          allData={allData}
+          getSubregion={getSubregion}
+          getDate={getDate}
+        ></Table>
         <VmtTable
           getDate={getDate}
           allData={allData}
