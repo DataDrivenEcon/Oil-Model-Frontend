@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const FilterNab = ({ setGetSubregion, setGetDate }) => {
+const FilterNab = ({ setGetSubregion, setGetDate, setGetCategory }) => {
   const [getRegion, setGetRegion] = useState(false);
   const region = [
     { region: "Us", subRegion: ["California", "Texas"] },
@@ -77,9 +77,11 @@ const FilterNab = ({ setGetSubregion, setGetDate }) => {
               onChange={(e) => setGetDate(e.target.value)}
               className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
             >
-              <option disabled>Monthly/Weekly</option>
-              <option defaultValue={"Monthly"}>Monthly</option>
-              <option>Weekly</option>
+              <option selected disabled>
+                Monthly/Weekly
+              </option>
+              <option value={"M"}>Monthly</option>
+              <option value={"W"}>Weekly</option>
             </select>
           </div>
         </div>
@@ -97,13 +99,10 @@ const FilterNab = ({ setGetSubregion, setGetDate }) => {
                 fillRule='nonzero'
               />
             </svg>
-            <select
-              onChange={(e) => setGetDate(e.target.value)}
-              className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
-            >
+            <select className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'>
               <option disabled>VMT/Mobility</option>
-              <option defaultValue={"Monthly"}>VMT</option>
-              <option>Mobility</option>
+              <option value={"VMT"}>VMT</option>
+              <option defaultValue={"Mobility"}>Mobility</option>
             </select>
           </div>
           <div className='relative inline-flex'>
@@ -118,12 +117,16 @@ const FilterNab = ({ setGetSubregion, setGetDate }) => {
                 fillRule='nonzero'
               />
             </svg>
-            <select className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'>
+            <select
+              onChange={(e) => setGetCategory(e.target.value)}
+              className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
+            >
               <option disabled>Select categories</option>
               <option defaultValue={"Retail and Recreation"}>
                 Retail and Recreation
               </option>
-              <option>Blue</option>
+              <option>Grocery and Pharmacy</option>
+              <option>Transit</option>
             </select>
           </div>
         </div>

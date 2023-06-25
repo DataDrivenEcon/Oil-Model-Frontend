@@ -8,21 +8,28 @@ import VmtTable from "../Components/Dashboard/VmtTable";
 const Dashboard = () => {
   const [allData, setAllData] = useState([]);
   const [getSubregion, setGetSubregion] = useState("california");
-  const [getDate, setGetDate] = useState("Monthly");
-
+  const [getCategory, setGetCategory] = useState("Retail and Recreation");
+  const [getDate, setGetDate] = useState("M");
+  const [getActualMobility, setGetActualMobility] = useState([]);
   useEffect(() => {
-    fetch("data.json")
+    fetch(
+      `http://localhost:3000/googleMobility-data?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'`
+    )
       .then((res) => res.json())
-      .then((data) => setAllData(data));
-  }, []);
+      .then((data) => setGetActualMobility(data));
+  }, [getDate, getCategory]);
 
   return (
     <div className='w-screen bg-gradient-to-r '>
       <DashboardNav />
-      <FilterNab setGetDate={setGetDate} setGetSubregion={setGetSubregion} />
+      <FilterNab
+        setGetCategory={setGetCategory}
+        setGetDate={setGetDate}
+        setGetSubregion={setGetSubregion}
+      />
       <div>
         <div className='mx-[2%]'>
-          <Chart allData={allData} getSubregion={getSubregion}></Chart>
+          <Chart allData={getActualMobility}></Chart>
         </div>
       </div>
       <div className='flex gap-5 items-center mx-[2%]'>

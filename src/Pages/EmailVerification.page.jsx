@@ -15,7 +15,9 @@ const EmailVerification = () => {
     useSendEmailVerification(auth);
   sending && <Loading />;
   useEffect(() => {
-    console.log(error);
+    if (error) {
+      alert(error.message);
+    }
   }, [error]);
 
   return (
