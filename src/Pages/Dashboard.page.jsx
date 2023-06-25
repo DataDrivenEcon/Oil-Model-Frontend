@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "../Components/Chart/Chart";
 import DashboardNav from "../Components/Dashboard/DashboardNav";
 import FilterNab from "../Components/Dashboard/FilterNab";
@@ -11,12 +11,35 @@ const Dashboard = () => {
   const [getCategory, setGetCategory] = useState("Retail and Recreation");
   const [getDate, setGetDate] = useState("M");
   const [getActualMobility, setGetActualMobility] = useState([]);
+  const [getMobilityForecast, setGetMobilityForecast] = useState([]);
+
   useEffect(() => {
-    fetch(
-      `http://localhost:3000/googleMobility-data?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'`
-    )
-      .then((res) => res.json())
-      .then((data) => setGetActualMobility(data));
+    const fetchActualMobility = async () => {
+      try {
+        const response = await fetch(
+          `https://gary-eisen-project-backend.vercel.app/googleMobility-data?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'`
+        );
+        const data = await response.json();
+        setGetActualMobility(data);
+      } catch (error) {
+        console.error("Error fetching actual mobility data:", error);
+      }
+    };
+
+    const fetchMobilityForecast = async () => {
+      try {
+        const response = await fetch(
+          `https://gary-eisen-project-backend.vercel.app/googleMobility-forecast?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'`
+        );
+        const data = await response.json();
+        setGetMobilityForecast(data);
+      } catch (error) {
+        console.error("Error fetching mobility forecast data:", error);
+      }
+    };
+
+    fetchActualMobility();
+    fetchMobilityForecast();
   }, [getDate, getCategory]);
 
   return (
@@ -29,7 +52,10 @@ const Dashboard = () => {
       />
       <div>
         <div className='mx-[2%]'>
-          <Chart allData={getActualMobility}></Chart>
+          <Chart
+            getActualMobility={getActualMobility}
+            getMobilityForecast={getMobilityForecast}
+          />
         </div>
       </div>
       <div className='flex gap-5 items-center mx-[2%]'>
@@ -37,12 +63,12 @@ const Dashboard = () => {
           allData={allData}
           getSubregion={getSubregion}
           getDate={getDate}
-        ></Table>
+        />
         <VmtTable
           getDate={getDate}
           allData={allData}
           getSubregion={getSubregion}
-        ></VmtTable>
+        />
       </div>
     </div>
   );

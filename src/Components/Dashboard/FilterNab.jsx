@@ -127,6 +127,9 @@ const FilterNab = ({ setGetSubregion, setGetDate, setGetCategory }) => {
               </option>
               <option>Grocery and Pharmacy</option>
               <option>Transit</option>
+              <option>Parks</option>
+              <option>Workplaces</option>
+              <option>Total</option>
             </select>
           </div>
         </div>
