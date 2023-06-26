@@ -1,13 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const FilterNab = ({ setGetSubregion, setGetDate, setGetCategory }) => {
-  const [getRegion, setGetRegion] = useState(false);
-  const region = [
-    { region: "Us", subRegion: ["California", "Texas"] },
-    { region: "Ger", subRegion: ["Berline", "Munich"] },
-  ];
-  const filterRegion = region.find((r) => r.region === getRegion);
+const FilterNab = ({
+  setGetDate,
+  setGetCategory,
+  setGetRegion,
+  getRegion,
+  setSubRegion,
+}) => {
+  const [allRegion, setAllRegion] = useState([]);
+  const [allSubRegion, setAllSubRegion] = useState([]);
+  useEffect(() => {
+    const allRegion = async () => {
+      fetch(
+        "https://gary-eisen-project-backend.vercel.app/region-subregion/region"
+      )
+        .then((res) => res.json())
+        .then((data) => setAllRegion(data));
+    };
+    const allSubRegion = async () => {
+      fetch(
+        "https://gary-eisen-project-backend.vercel.app/region-subregion/sub-region"
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          const filteredData = data.filter(
+            (item) => item.CountryName === getRegion
+          );
 
+          setAllSubRegion(filteredData);
+        });
+    };
+    allRegion();
+    allSubRegion();
+  }, [getRegion]);
   return (
     <div className='w-full mt-2'>
       <div className='flex mx-[2%] justify-between items-center'>
@@ -28,11 +53,11 @@ const FilterNab = ({ setGetSubregion, setGetDate, setGetCategory }) => {
               onChange={(e) => setGetRegion(e.target.value)}
               className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
             >
-              <option selected disabled>
-                Select region
-              </option>
-              <option>Us</option>
-              <option>Ger</option>
+              <option disabled>Select region</option>
+
+              {allRegion?.map((r, i) => (
+                <option key={i}>{r.LocationName}</option>
+              ))}
             </select>
           </div>
           {/* 2222 */}
@@ -49,15 +74,13 @@ const FilterNab = ({ setGetSubregion, setGetDate, setGetCategory }) => {
               />
             </svg>
             <select
-              disabled={getRegion ? false : true}
-              onChange={(e) => setGetSubregion(e.target.value)}
+              onChange={(e) => setSubRegion(e.target.value)}
+              disabled={allRegion ? false : true}
               className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
             >
-              <option selected={getRegion ? false : true} disabled>
-                Select subregion
-              </option>
-              {filterRegion?.subRegion?.map((r, i) => (
-                <option key={i}>{r}</option>
+              <option disabled>Select subregion</option>
+              {allSubRegion?.map((r, i) => (
+                <option key={i}>{r.LocationName}</option>
               ))}
             </select>
           </div>

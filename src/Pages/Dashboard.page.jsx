@@ -6,18 +6,17 @@ import Table from "../Components/Dashboard/Table";
 import VmtTable from "../Components/Dashboard/VmtTable";
 
 const Dashboard = () => {
-  const [allData, setAllData] = useState([]);
-  const [getSubregion, setGetSubregion] = useState("california");
   const [getCategory, setGetCategory] = useState("Retail and Recreation");
   const [getDate, setGetDate] = useState("M");
   const [getActualMobility, setGetActualMobility] = useState([]);
   const [getMobilityForecast, setGetMobilityForecast] = useState([]);
-
+  const [getRegion, setGetRegion] = useState("United States");
+  const [subRegion, setSubRegion] = useState("Alabama");
   useEffect(() => {
     const fetchActualMobility = async () => {
       try {
         const response = await fetch(
-          `https://gary-eisen-project-backend.vercel.app/googleMobility-data?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'`
+          `https://gary-eisen-project-backend.vercel.app/googleMobility-data?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'&LocationName='${subRegion}'`
         );
         const data = await response.json();
         setGetActualMobility(data);
@@ -29,7 +28,7 @@ const Dashboard = () => {
     const fetchMobilityForecast = async () => {
       try {
         const response = await fetch(
-          `https://gary-eisen-project-backend.vercel.app/googleMobility-forecast?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'`
+          `https://gary-eisen-project-backend.vercel.app/googleMobility-forecast?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'&LocationName='${subRegion}'`
         );
         const data = await response.json();
         setGetMobilityForecast(data);
@@ -38,17 +37,18 @@ const Dashboard = () => {
       }
     };
 
-    fetchActualMobility();
     fetchMobilityForecast();
-  }, [getDate, getCategory]);
-
+    fetchActualMobility();
+  }, [getDate, getCategory, subRegion]);
   return (
     <div className='w-screen bg-gradient-to-r '>
       <DashboardNav />
       <FilterNab
         setGetCategory={setGetCategory}
         setGetDate={setGetDate}
-        setGetSubregion={setGetSubregion}
+        setGetRegion={setGetRegion}
+        getRegion={getRegion}
+        setSubRegion={setSubRegion}
       />
       <div>
         <div className='mx-[2%]'>
@@ -59,16 +59,8 @@ const Dashboard = () => {
         </div>
       </div>
       <div className='flex gap-5 items-center mx-[2%]'>
-        <Table
-          allData={allData}
-          getSubregion={getSubregion}
-          getDate={getDate}
-        />
-        <VmtTable
-          getDate={getDate}
-          allData={allData}
-          getSubregion={getSubregion}
-        />
+        <Table />
+        <VmtTable />
       </div>
     </div>
   );
