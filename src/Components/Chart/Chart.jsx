@@ -52,13 +52,6 @@ const Chart = ({ getActualMobility, getMobilityForecast }) => {
             stroke='#82ca9d'
           />
           <Tooltip />
-
-          <Brush
-            dataKey='Date'
-            tickFormatter={formatDate}
-            height={10}
-            stroke='#8884d8'
-          />
         </LineChart>
       </ResponsiveContainer>
     </div>

@@ -1,8 +1,8 @@
-const Table = () => {
+const ForecastTable = ({ getCategory }) => {
   return (
     <div className='w-full shadow-lg py-2'>
       <p className='pb-2 pl-2 font-semibold text-[#5e676293] '>
-        retail and recreation % change from baseline table-Mobility
+        {getCategory} % change from baseline-Forecast
       </p>
       <div className='overflow-x-auto overflow-y-auto max-h-[250px]'>
         <table className='table w-full'>
@@ -22,4 +22,4 @@ const Table = () => {
   );
 };
 
-export default Table;
+export default ForecastTable;

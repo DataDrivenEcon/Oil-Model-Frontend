@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import Chart from "../Components/Chart/Chart";
 import DashboardNav from "../Components/Dashboard/DashboardNav";
 import FilterNab from "../Components/Dashboard/FilterNab";
-import Table from "../Components/Dashboard/Table";
-import VmtTable from "../Components/Dashboard/VmtTable";
+import ActualTable from "../Components/Dashboard/ActualTable";
+import ForecastTable from "../Components/Dashboard/ForecastTable";
 
 const Dashboard = () => {
   const [getCategory, setGetCategory] = useState("Retail and Recreation");
@@ -59,8 +59,8 @@ const Dashboard = () => {
         </div>
       </div>
       <div className='flex gap-5 items-center mx-[2%]'>
-        <Table />
-        <VmtTable />
+        <ActualTable getCategory={getCategory} />
+        <ForecastTable getCategory={getCategory} />
       </div>
     </div>
   );
