@@ -59,8 +59,14 @@ const Dashboard = () => {
         </div>
       </div>
       <div className='flex gap-5 items-center mx-[2%]'>
-        <ActualTable getCategory={getCategory} />
-        <ForecastTable getCategory={getCategory} />
+        <ActualTable
+          getCategory={getCategory}
+          getActualMobility={getActualMobility}
+        />
+        <ForecastTable
+          getCategory={getCategory}
+          getMobilityForecast={getMobilityForecast}
+        />
       </div>
     </div>
   );

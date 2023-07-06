@@ -1,4 +1,11 @@
-const AcutalTable = ({ getCategory }) => {
+import React from "react";
+
+const AcutalTable = ({ getCategory, getActualMobility }) => {
+  // Extract unique years from the data
+  const years = Array.from(
+    new Set(getActualMobility.map((item) => new Date(item.Date).getFullYear()))
+  );
+
   return (
     <div className='w-full shadow-lg py-2'>
       <p className='pb-2 pl-2 font-semibold text-[#5e676293] '>
@@ -9,13 +16,25 @@ const AcutalTable = ({ getCategory }) => {
           <thead className='sticky z-30 top-0'>
             <tr>
               <th>Month</th>
-              <th>2020</th>
-              <th>2021</th>
-              <th>2021</th>
-              <th>2023</th>
+              {years.map((year, i) => (
+                <th key={i}>{year}</th>
+              ))}
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {getActualMobility.map((item, i) => (
+              <tr key={i}>
+                <td>
+                  {new Date(item.Date).toLocaleString("default", {
+                    month: "long",
+                  })}
+                </td>
+                {years.map((year) => (
+                  <td key={year}>{item.Value}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </div>
