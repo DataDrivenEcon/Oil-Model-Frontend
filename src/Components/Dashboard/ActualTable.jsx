@@ -1,9 +1,9 @@
 import React from "react";
 
-const AcutalTable = ({ getCategory, getActualMobility }) => {
+const AcutalTable = ({ getCategory, getActualData }) => {
   // Extract unique years from the data
   const years = Array.from(
-    new Set(getActualMobility.map((item) => new Date(item.Date).getFullYear()))
+    new Set(getActualData.map((item) => new Date(item.Date).getFullYear()))
   );
 
   return (
@@ -22,7 +22,7 @@ const AcutalTable = ({ getCategory, getActualMobility }) => {
             </tr>
           </thead>
           <tbody>
-            {getActualMobility.map((item, i) => (
+            {getActualData.map((item, i) => (
               <tr key={i}>
                 <td>
                   {new Date(item.Date).toLocaleString("default", {

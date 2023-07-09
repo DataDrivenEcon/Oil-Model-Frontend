@@ -1,8 +1,6 @@
-const ForecastTable = ({ getCategory, getMobilityForecast }) => {
+const ForecastTable = ({ getCategory, getAllForecast }) => {
   const years = Array.from(
-    new Set(
-      getMobilityForecast.map((item) => new Date(item.Date).getFullYear())
-    )
+    new Set(getAllForecast.map((item) => new Date(item.Date).getFullYear()))
   );
   return (
     <div className='w-full shadow-lg py-2'>
@@ -20,7 +18,7 @@ const ForecastTable = ({ getCategory, getMobilityForecast }) => {
             </tr>
           </thead>
           <tbody>
-            {getMobilityForecast.map((item, i) => (
+            {getAllForecast.map((item, i) => (
               <tr key={i}>
                 <td>
                   {new Date(item.Date).toLocaleString("default", {

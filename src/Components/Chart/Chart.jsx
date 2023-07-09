@@ -8,14 +8,48 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  Brush,
 } from "recharts";
 
-const Chart = ({ getActualMobility, getMobilityForecast }) => {
+const Chart = ({
+  getActualData,
+  getMobilityForecast,
+  getVMTForecast,
+  getDataType,
+}) => {
   const formatDate = (date) => {
     const dates = date?.split("T")[0];
     const [year, month, day] = dates?.split("-");
     return `${year}-${month}-${day}`;
+  };
+
+  const filteredActualData = getActualData.filter(
+    (entry) => entry.Value !== undefined
+  );
+  const filteredMobilityForecast = getMobilityForecast.filter(
+    (entry) => entry.Value !== undefined
+  );
+  const filteredVMTForecast = getVMTForecast.filter(
+    (entry) => entry.SumOfValue !== undefined
+  );
+
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className='custom-tooltip bg-white p-4'>
+          <p className='label'>{formatDate(label)}</p>
+          {payload.map((entry) => (
+            <p key={entry.dataKey} className='value'>
+              <span
+                className='color'
+                style={{ backgroundColor: entry.stroke }}
+              ></span>
+              {entry.name}: {entry.value}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
@@ -25,7 +59,7 @@ const Chart = ({ getActualMobility, getMobilityForecast }) => {
       </h1>
       <ResponsiveContainer width='100%' height={250}>
         <LineChart
-          data={getActualMobility}
+          data={filteredActualData}
           margin={{ top: 10, right: 30, left: -30, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray='3 3' />
@@ -36,22 +70,44 @@ const Chart = ({ getActualMobility, getMobilityForecast }) => {
           />
           <YAxis />
           <Legend />
-          <Line
-            margin={{ bottom: 2500 }}
-            type='monotone'
-            name='Forecast Mobility'
-            dataKey='Value'
-            stroke='#8884d8'
-            data={getMobilityForecast}
-          />
-
-          <Line
-            type='monotone'
-            name='Actual Mobility'
-            dataKey='Value'
-            stroke='#82ca9d'
-          />
-          <Tooltip />
+          {getDataType === "Mobility" &&
+            filteredMobilityForecast.length > 0 && (
+              <>
+                <Line
+                  type='monotone'
+                  name='Forecast Mobility'
+                  dataKey='Value'
+                  stroke='#8884d8'
+                  data={filteredMobilityForecast}
+                />
+                <Line
+                  type='monotone'
+                  name='Actual Mobility'
+                  dataKey='Value'
+                  stroke='#82ca9d'
+                  data={filteredActualData}
+                />
+              </>
+            )}
+          {getDataType === "VMT" && filteredVMTForecast.length > 0 && (
+            <>
+              <Line
+                type='monotone'
+                name='Forecast VMT'
+                dataKey='SumOfValue'
+                stroke='#8884d8'
+                data={filteredVMTForecast}
+              />
+              <Line
+                type='monotone'
+                name='Actual VMT'
+                dataKey='Value'
+                stroke='#82ca9d'
+                data={filteredActualData}
+              />
+            </>
+          )}
+          <Tooltip content={<CustomTooltip />} />
         </LineChart>
       </ResponsiveContainer>
     </div>

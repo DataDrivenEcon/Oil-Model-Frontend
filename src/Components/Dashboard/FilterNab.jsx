@@ -6,6 +6,7 @@ const FilterNab = ({
   setGetRegion,
   getRegion,
   setSubRegion,
+  setGetDataType,
 }) => {
   const [allRegion, setAllRegion] = useState([]);
   const [allSubRegion, setAllSubRegion] = useState([]);
@@ -122,10 +123,13 @@ const FilterNab = ({
                 fillRule='nonzero'
               />
             </svg>
-            <select className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'>
+            <select
+              onChange={(e) => setGetDataType(e.target.value)}
+              className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
+            >
               <option disabled>VMT/Mobility</option>
-              <option value={"VMT"}>VMT</option>
               <option defaultValue={"Mobility"}>Mobility</option>
+              <option value={"VMT"}>VMT</option>
             </select>
           </div>
           <div className='relative inline-flex'>

@@ -10,38 +10,67 @@ const Dashboard = () => {
   const [getDate, setGetDate] = useState("M");
   const [getActualMobility, setGetActualMobility] = useState([]);
   const [getMobilityForecast, setGetMobilityForecast] = useState([]);
+  const [getVMTForecast, setGetVMTForecast] = useState([]);
   const [getRegion, setGetRegion] = useState("United States");
   const [subRegion, setSubRegion] = useState("Alabama");
+  const [getDataType, setGetDataType] = useState("Mobility");
+
+  const fetchActualMobility = async () => {
+    try {
+      const url = `https://gary-eisen-project-backend.vercel.app/googleMobility-data?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'&LocationName='${subRegion}'`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setGetActualMobility(data);
+    } catch (error) {
+      console.error("Error fetching actual mobility data:", error);
+    }
+  };
+
+  const fetchMobilityForecast = async () => {
+    try {
+      const url = `https://gary-eisen-project-backend.vercel.app/googleMobility-forecast?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'&LocationName='${subRegion}'`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setGetMobilityForecast(data);
+    } catch (error) {
+      console.error("Error fetching mobility forecast data:", error);
+    }
+  };
+
+  const fetchVMTData = async () => {
+    try {
+      const url = `http://localhost:3000/googleVmt-data?LocationName='Texas'`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setGetActualMobility(data);
+    } catch (error) {
+      console.error("Error fetching VMT data:", error);
+    }
+  };
+
+  const fetchVMTForecast = async () => {
+    try {
+      const url = `http://localhost:3000/googleVmt-forecast?MonthlyOrWeeklyData='${getDate}'&LocationName='${subRegion}'`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setGetVMTForecast(data);
+    } catch (error) {
+      console.error("Error fetching VMT forecast data:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchActualMobility = async () => {
-      try {
-        const response = await fetch(
-          `https://gary-eisen-project-backend.vercel.app/googleMobility-data?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'&LocationName='${subRegion}'`
-        );
-        const data = await response.json();
-        setGetActualMobility(data);
-      } catch (error) {
-        console.error("Error fetching actual mobility data:", error);
-      }
-    };
+    if (getDataType === "Mobility") {
+      fetchActualMobility();
+      fetchMobilityForecast();
+    } else if (getDataType === "VMT") {
+      fetchVMTData();
+      fetchVMTForecast();
+    }
+  }, [getDate, getCategory, subRegion, getDataType]);
 
-    const fetchMobilityForecast = async () => {
-      try {
-        const response = await fetch(
-          `https://gary-eisen-project-backend.vercel.app/googleMobility-forecast?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'&LocationName='${subRegion}'`
-        );
-        const data = await response.json();
-        setGetMobilityForecast(data);
-      } catch (error) {
-        console.error("Error fetching mobility forecast data:", error);
-      }
-    };
-
-    fetchMobilityForecast();
-    fetchActualMobility();
-  }, [getDate, getCategory, subRegion]);
   return (
-    <div className='w-screen bg-gradient-to-r '>
+    <div className='w-screen bg-gradient-to-r'>
       <DashboardNav />
       <FilterNab
         setGetCategory={setGetCategory}
@@ -49,23 +78,26 @@ const Dashboard = () => {
         setGetRegion={setGetRegion}
         getRegion={getRegion}
         setSubRegion={setSubRegion}
+        setGetDataType={setGetDataType}
       />
       <div>
         <div className='mx-[2%]'>
           <Chart
-            getActualMobility={getActualMobility}
+            getActualData={getActualMobility}
             getMobilityForecast={getMobilityForecast}
+            getVMTForecast={getVMTForecast}
+            getDataType={getDataType}
           />
         </div>
       </div>
       <div className='flex gap-5 items-center mx-[2%]'>
         <ActualTable
           getCategory={getCategory}
-          getActualMobility={getActualMobility}
+          getActualData={getActualMobility}
         />
         <ForecastTable
           getCategory={getCategory}
-          getMobilityForecast={getMobilityForecast}
+          getAllForecast={getMobilityForecast}
         />
       </div>
     </div>
