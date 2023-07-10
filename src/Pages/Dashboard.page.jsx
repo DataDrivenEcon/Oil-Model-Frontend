@@ -39,7 +39,7 @@ const Dashboard = () => {
 
   const fetchVMTData = async () => {
     try {
-      const url = `http://localhost:3000/googleVmt-data?LocationName='Texas'`;
+      const url = `https://gary-eisen-project-backend.vercel.app/googleVmt-data?LocationName='${subRegion}'`;
       const response = await fetch(url);
       const data = await response.json();
       setGetActualMobility(data);
@@ -50,7 +50,7 @@ const Dashboard = () => {
 
   const fetchVMTForecast = async () => {
     try {
-      const url = `http://localhost:3000/googleVmt-forecast?MonthlyOrWeeklyData='${getDate}'&LocationName='${subRegion}'`;
+      const url = `https://gary-eisen-project-backend.vercel.app/googleVmt-forecast?MonthlyOrWeeklyData='${getDate}'&LocationName='${subRegion}'`;
       const response = await fetch(url);
       const data = await response.json();
       setGetVMTForecast(data);
@@ -68,6 +68,16 @@ const Dashboard = () => {
       fetchVMTForecast();
     }
   }, [getDate, getCategory, subRegion, getDataType]);
+
+  useEffect(() => {
+    if (getDataType === "Mobility") {
+      fetchActualMobility();
+      fetchMobilityForecast();
+    } else if (getDataType === "VMT") {
+      fetchVMTData();
+      fetchVMTForecast();
+    }
+  }, [getDate, getCategory, subRegion, getDataType, subRegion]);
 
   return (
     <div className='w-screen bg-gradient-to-r'>
@@ -94,10 +104,15 @@ const Dashboard = () => {
         <ActualTable
           getCategory={getCategory}
           getActualData={getActualMobility}
+          getDataType={getDataType}
         />
         <ForecastTable
           getCategory={getCategory}
-          getAllForecast={getMobilityForecast}
+          getAllForecast={
+            getDataType === "Mobility" ? getMobilityForecast : getVMTForecast
+          }
+          getDataType={getDataType}
+          subRegion={subRegion}
         />
       </div>
     </div>

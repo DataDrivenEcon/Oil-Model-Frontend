@@ -32,13 +32,16 @@ const Chart = ({
     (entry) => entry.SumOfValue !== undefined
   );
 
+  const showMobilityForecast = getDataType === "Mobility" && true;
+  const showVMTForecast = getDataType === "VMT" && true;
+
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
         <div className='custom-tooltip bg-white p-4'>
           <p className='label'>{formatDate(label)}</p>
-          {payload.map((entry) => (
-            <p key={entry.dataKey} className='value'>
+          {payload.map((entry, i) => (
+            <p key={entry.dataKey + i} className='value'>
               <span
                 className='color'
                 style={{ backgroundColor: entry.stroke }}
@@ -55,12 +58,13 @@ const Chart = ({
   return (
     <div className='flex flex-col py-[0.4rem]'>
       <h1 className='ml-[4.8rem] pb-2 font-semibold text-[#5e676293] text-lg'>
-        VMT retail and recreation (Millions)
+        {getDataType === "Mobility" ? "Mobility" : "VMT"} retail and recreation
+        (Millions)
       </h1>
       <ResponsiveContainer width='100%' height={250}>
         <LineChart
           data={filteredActualData}
-          margin={{ top: 10, right: 30, left: -30, bottom: 5 }}
+          margin={{ top: 10, right: 30, left: 30, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray='3 3' />
           <XAxis
@@ -70,26 +74,25 @@ const Chart = ({
           />
           <YAxis />
           <Legend />
-          {getDataType === "Mobility" &&
-            filteredMobilityForecast.length > 0 && (
-              <>
-                <Line
-                  type='monotone'
-                  name='Forecast Mobility'
-                  dataKey='Value'
-                  stroke='#8884d8'
-                  data={filteredMobilityForecast}
-                />
-                <Line
-                  type='monotone'
-                  name='Actual Mobility'
-                  dataKey='Value'
-                  stroke='#82ca9d'
-                  data={filteredActualData}
-                />
-              </>
-            )}
-          {getDataType === "VMT" && filteredVMTForecast.length > 0 && (
+          {showMobilityForecast && (
+            <>
+              <Line
+                type='monotone'
+                name='Forecast Mobility'
+                dataKey='Value'
+                stroke='#8884d8'
+                data={filteredMobilityForecast}
+              />
+              <Line
+                type='monotone'
+                name='Actual Mobility'
+                dataKey='Value'
+                stroke='#82ca9d'
+                data={filteredActualData}
+              />
+            </>
+          )}
+          {showVMTForecast && (
             <>
               <Line
                 type='monotone'
