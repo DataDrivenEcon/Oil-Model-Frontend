@@ -11,6 +11,20 @@ const ForecastTable = ({ getCategory, getAllForecast, getDataType }) => {
     }
   };
 
+  const months = Array.from(
+    new Set(
+      getAllForecast.map((item) =>
+        new Date(item.Date).toLocaleDateString("en-US", {
+          month: "short",
+        })
+      )
+    )
+  );
+
+  const years = Array.from(
+    new Set(getAllForecast.map((item) => new Date(item.Date).getFullYear()))
+  );
+
   return (
     getAllForecast.length > 0 && (
       <div className='w-full shadow-lg py-2'>
@@ -23,27 +37,39 @@ const ForecastTable = ({ getCategory, getAllForecast, getDataType }) => {
           <table className='table w-full'>
             <thead className='sticky top-0 z-50'>
               <tr>
-                <th>Date</th>
-                <th>Value</th>
+                <th>Month</th>
+                {years.map((year, i) => (
+                  <th key={i}>{year}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {getAllForecast.map((item, i) => (
+              {months.map((month, i) => (
                 <tr key={i}>
-                  <td>
-                    {new Date(item.Date).toLocaleString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </td>
-                  <td>
-                    {renderCellValue(item) !== 0 && (
-                      <span className='text-blue-600 p-1 rounded'>
-                        {renderCellValue(item)}
-                      </span>
-                    )}
-                  </td>
+                  <td className='bg-gray-100'>{month}</td>
+                  {years.map((year, i) => (
+                    <td key={i}>
+                      {getAllForecast.find(
+                        (item) =>
+                          new Date(item.Date).toLocaleDateString("en-US", {
+                            month: "short",
+                          }) === month &&
+                          new Date(item.Date).getFullYear() === year
+                      ) ? (
+                        <span className=' p-1 rounded'>
+                          {getAllForecast.find(
+                            (item) =>
+                              new Date(item.Date).toLocaleDateString("en-US", {
+                                month: "short",
+                              }) === month &&
+                              new Date(item.Date).getFullYear() === year
+                          ).Value || 0}
+                        </span>
+                      ) : (
+                        0
+                      )}
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>

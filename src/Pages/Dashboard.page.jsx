@@ -12,12 +12,15 @@ const Dashboard = () => {
   const [getMobilityForecast, setGetMobilityForecast] = useState([]);
   const [getVMTForecast, setGetVMTForecast] = useState([]);
   const [getRegion, setGetRegion] = useState("United States");
-  const [subRegion, setSubRegion] = useState("Alabama");
+  const [subRegion, setSubRegion] = useState("");
   const [getDataType, setGetDataType] = useState("Mobility");
+  const [tableSize, setTableSize] = useState(2);
 
   const fetchActualMobility = async () => {
     try {
-      const url = `https://gary-eisen-project-backend.vercel.app/googleMobility-data?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'&LocationName='${subRegion}'`;
+      const url = `https://gary-eisen-project-backend.vercel.app/googleMobility-data?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'&LocationName='${
+        subRegion === "" ? getRegion : subRegion
+      }'`;
       const response = await fetch(url);
       const data = await response.json();
       setGetActualMobility(data);
@@ -28,7 +31,9 @@ const Dashboard = () => {
 
   const fetchMobilityForecast = async () => {
     try {
-      const url = `https://gary-eisen-project-backend.vercel.app/googleMobility-forecast?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'&LocationName='${subRegion}'`;
+      const url = `https://gary-eisen-project-backend.vercel.app/googleMobility-forecast?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'&LocationName='${
+        subRegion === "" ? getRegion : subRegion
+      }'`;
       const response = await fetch(url);
       const data = await response.json();
       setGetMobilityForecast(data);
@@ -39,7 +44,9 @@ const Dashboard = () => {
 
   const fetchVMTData = async () => {
     try {
-      const url = `https://gary-eisen-project-backend.vercel.app/googleVmt-data?LocationName='${subRegion}'`;
+      const url = `https://gary-eisen-project-backend.vercel.app/googleVmt-data?LocationName='${
+        subRegion === "" ? getRegion : subRegion
+      }'`;
       const response = await fetch(url);
       const data = await response.json();
       setGetActualMobility(data);
@@ -50,7 +57,9 @@ const Dashboard = () => {
 
   const fetchVMTForecast = async () => {
     try {
-      const url = `https://gary-eisen-project-backend.vercel.app/googleVmt-forecast?MonthlyOrWeeklyData='${getDate}'&LocationName='${subRegion}'`;
+      const url = `https://gary-eisen-project-backend.vercel.app/googleVmt-forecast?MonthlyOrWeeklyData='${getDate}'&LocationName='${
+        subRegion === "" ? getRegion : subRegion
+      }'&GoogleCategory='${getCategory}'`;
       const response = await fetch(url);
       const data = await response.json();
       setGetVMTForecast(data);
@@ -63,21 +72,13 @@ const Dashboard = () => {
     if (getDataType === "Mobility") {
       fetchActualMobility();
       fetchMobilityForecast();
+      setTableSize(2);
     } else if (getDataType === "VMT") {
       fetchVMTData();
       fetchVMTForecast();
+      setTableSize(1);
     }
   }, [getDate, getCategory, subRegion, getDataType]);
-
-  useEffect(() => {
-    if (getDataType === "Mobility") {
-      fetchActualMobility();
-      fetchMobilityForecast();
-    } else if (getDataType === "VMT") {
-      fetchVMTData();
-      fetchVMTForecast();
-    }
-  }, [getDate, getCategory, subRegion, getDataType, subRegion]);
 
   return (
     <div className='w-screen bg-gradient-to-r'>
@@ -97,15 +98,11 @@ const Dashboard = () => {
             getMobilityForecast={getMobilityForecast}
             getVMTForecast={getVMTForecast}
             getDataType={getDataType}
+            getCategory={getCategory}
           />
         </div>
       </div>
       <div className='flex gap-5 items-center mx-[2%]'>
-        <ActualTable
-          getCategory={getCategory}
-          getActualData={getActualMobility}
-          getDataType={getDataType}
-        />
         <ForecastTable
           getCategory={getCategory}
           getAllForecast={
@@ -114,6 +111,28 @@ const Dashboard = () => {
           getDataType={getDataType}
           subRegion={subRegion}
         />
+        {tableSize === 2 &&
+          ((getDataType === "Mobility" && (
+            <ActualTable
+              getCategory={getCategory}
+              getActualData={getActualMobility}
+              getDataType={getDataType}
+            />
+          )) ||
+            (getDataType === "VMT" && getCategory === "Total" && (
+              <ActualTable
+                getCategory={getCategory}
+                getActualData={getActualMobility}
+                getDataType={getDataType}
+              />
+            )))}
+        {getDataType === "VMT" && getCategory === "Total" && (
+          <ActualTable
+            getCategory={getCategory}
+            getActualData={getActualMobility}
+            getDataType={getDataType}
+          />
+        )}
       </div>
     </div>
   );

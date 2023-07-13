@@ -15,6 +15,7 @@ const Chart = ({
   getMobilityForecast,
   getVMTForecast,
   getDataType,
+  getCategory,
 }) => {
   const formatDate = (date) => {
     const dates = date?.split("T")[0];
@@ -101,13 +102,15 @@ const Chart = ({
                 stroke='#8884d8'
                 data={filteredVMTForecast}
               />
-              <Line
-                type='monotone'
-                name='Actual VMT'
-                dataKey='Value'
-                stroke='#82ca9d'
-                data={filteredActualData}
-              />
+              {getCategory === "Total" && (
+                <Line
+                  type='monotone'
+                  name='Actual VMT'
+                  dataKey='Value'
+                  stroke='#82ca9d'
+                  data={filteredActualData}
+                />
+              )}
             </>
           )}
           <Tooltip content={<CustomTooltip />} />

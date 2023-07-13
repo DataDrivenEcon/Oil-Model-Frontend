@@ -79,7 +79,7 @@ const FilterNab = ({
               disabled={allRegion ? false : true}
               className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
             >
-              <option disabled>Select subregion</option>
+              <option>Select subregion</option>
               {allSubRegion?.map((r, i) => (
                 <option key={i}>{r.LocationName}</option>
               ))}
@@ -101,9 +101,7 @@ const FilterNab = ({
               onChange={(e) => setGetDate(e.target.value)}
               className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
             >
-              <option selected disabled>
-                Monthly/Weekly
-              </option>
+              <option disabled>Monthly/Weekly</option>
               <option value={"M"}>Monthly</option>
               <option value={"W"}>Weekly</option>
             </select>
