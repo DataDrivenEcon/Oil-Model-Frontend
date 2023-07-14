@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
@@ -8,7 +9,6 @@ import {
 import auth from "../firebase.init";
 import Loading from "../Components/Loading";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
 
 const LogIn = () => {
   const navigate = useNavigate();
@@ -21,7 +21,6 @@ const LogIn = () => {
   const {
     register,
     handleSubmit,
-
     formState: { errors },
   } = useForm();
 
@@ -41,12 +40,33 @@ const LogIn = () => {
     }
   }, [loginError]);
 
+  useEffect(() => {
+    if (user || loginUser) {
+      // Call the post API here to get the token
+      const email = user?.user?.email || loginUser?.user?.email;
+
+      fetch("https://gary-eisen-project-backend.vercel.app/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }), // Include any required data
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          localStorage.setItem("token", data.token);
+          navigate(from, { replace: true });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }, [user, loginUser, navigate, from]);
+
   if (loading || loginLoading) {
-    <Loading></Loading>;
+    return <Loading />;
   }
-  if (user || loginUser) {
-    navigate(from, { replace: true });
-  }
+
   if (error) {
     toast.error(`${error.message}`, {
       position: "top-right",
@@ -63,10 +83,7 @@ const LogIn = () => {
 
   return (
     <div className='flex flex-col md:flex-row h-screen items-center'>
-      <div
-        className='bg-white w-full md:max-w-md lg:max-w-full md:mx-auto md:mx-0 md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12
-        flex items-center justify-center'
-      >
+      <div className='bg-white w-full md:max-w-md lg:max-w-full md:mx-auto md:mx-0 md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12 flex items-center justify-center'>
         <div className='w-full h-100'>
           <Link to={"/"} className='text-3xl font-inter font-semibold'>
             Brand Name
@@ -104,7 +121,7 @@ const LogIn = () => {
                 focus:bg-white focus:outline-none'
               />
               {errors.password && (
-                <span className='text-red-400 mt-1'>Passowrd is required</span>
+                <span className='text-red-400 mt-1'>Password is required</span>
               )}
               {errorMessage === "wrong password" && (
                 <span className='text-red-500'>{errorMessage}</span>
@@ -163,4 +180,5 @@ const LogIn = () => {
     </div>
   );
 };
+
 export default LogIn;

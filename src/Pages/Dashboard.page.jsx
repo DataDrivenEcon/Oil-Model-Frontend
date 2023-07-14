@@ -19,6 +19,8 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem("token"); // Get the token from local storage
+
         if (getDataType === "Mobility") {
           const mobilityDataUrl = `https://gary-eisen-project-backend.vercel.app/googleMobility-data?MonthlyOrWeeklyData='${getDate}'&GoogleCategory='${getCategory}'&LocationName='${
             subRegion === "" ? getRegion : subRegion
@@ -28,8 +30,16 @@ const Dashboard = () => {
           }'`;
 
           const [response1, response2] = await Promise.all([
-            fetch(mobilityDataUrl),
-            fetch(mobilityForecastUrl),
+            fetch(mobilityDataUrl, {
+              headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the headers
+              },
+            }),
+            fetch(mobilityForecastUrl, {
+              headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the headers
+              },
+            }),
           ]);
 
           if (!response1.ok || !response2.ok) {
@@ -52,8 +62,16 @@ const Dashboard = () => {
           }'&GoogleCategory='${getCategory}'`;
 
           const [response1, response2] = await Promise.all([
-            fetch(vmtDataUrl),
-            fetch(vmtForecastUrl),
+            fetch(vmtDataUrl, {
+              headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the headers
+              },
+            }),
+            fetch(vmtForecastUrl, {
+              headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the headers
+              },
+            }),
           ]);
 
           if (!response1.ok || !response2.ok) {

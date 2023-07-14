@@ -8,6 +8,7 @@ import {
 import auth from "../firebase.init";
 import Loading from "../Components/Loading";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 const SignUp = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,9 +30,28 @@ const SignUp = () => {
     <Loading></Loading>;
   }
 
-  if (user || createUser) {
-    navigate(from, { replace: true });
-  }
+  useEffect(() => {
+    if (user || createUser) {
+      // Call the post API here to get the token
+      const email = user?.user?.email || createUser?.user?.email;
+
+      fetch("https://gary-eisen-project-backend.vercel.app/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }), // Include any required data
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          localStorage.setItem("token", data.token);
+          navigate(from, { replace: true });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }, [user, createUser, navigate, from]);
   if (error) {
     toast.error(`${error.message}`, {
       position: "top-right",

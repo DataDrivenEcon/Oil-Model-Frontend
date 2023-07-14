@@ -10,17 +10,29 @@ const FilterNab = ({
 }) => {
   const [allRegion, setAllRegion] = useState([]);
   const [allSubRegion, setAllSubRegion] = useState([]);
+  const token = localStorage.getItem("token"); // Get the token from local storage
+
   useEffect(() => {
     const allRegion = async () => {
       fetch(
-        "https://gary-eisen-project-backend.vercel.app/region-subregion/region"
+        "https://gary-eisen-project-backend.vercel.app/region-subregion/region",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the headers
+          },
+        }
       )
         .then((res) => res.json())
         .then((data) => setAllRegion(data));
     };
     const allSubRegion = async () => {
       fetch(
-        "https://gary-eisen-project-backend.vercel.app/region-subregion/sub-region"
+        "https://gary-eisen-project-backend.vercel.app/region-subregion/sub-region",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the headers
+          },
+        }
       )
         .then((res) => res.json())
         .then((data) => {
