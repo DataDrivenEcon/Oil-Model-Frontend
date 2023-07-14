@@ -79,7 +79,7 @@ const FilterNab = ({
               disabled={allRegion ? false : true}
               className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
             >
-              <option>Select subregion</option>
+              <option value={""}>Select subregion</option>
               {allSubRegion?.map((r, i) => (
                 <option key={i}>{r.LocationName}</option>
               ))}

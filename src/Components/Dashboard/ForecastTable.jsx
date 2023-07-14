@@ -31,7 +31,7 @@ const ForecastTable = ({ getCategory, getAllForecast, getDataType }) => {
         <p className='pb-2 pl-2 font-semibold text-[#5e676293]'>
           {getDataType === "Mobility"
             ? `${getCategory} % change from baseline-Forecast`
-            : "Total % Vehicle Miles Traveled-Forecast"}
+            : `${getCategory} % Vehicle Miles Traveled-Forecast`}
         </p>
         <div className='overflow-x-auto overflow-y-auto max-h-[250px]'>
           <table className='table w-full'>
@@ -47,29 +47,20 @@ const ForecastTable = ({ getCategory, getAllForecast, getDataType }) => {
               {months.map((month, i) => (
                 <tr key={i}>
                   <td className='bg-gray-100'>{month}</td>
-                  {years.map((year, i) => (
-                    <td key={i}>
-                      {getAllForecast.find(
-                        (item) =>
-                          new Date(item.Date).toLocaleDateString("en-US", {
-                            month: "short",
-                          }) === month &&
-                          new Date(item.Date).getFullYear() === year
-                      ) ? (
-                        <span className=' p-1 rounded'>
-                          {getAllForecast.find(
-                            (item) =>
-                              new Date(item.Date).toLocaleDateString("en-US", {
-                                month: "short",
-                              }) === month &&
-                              new Date(item.Date).getFullYear() === year
-                          ).Value || 0}
-                        </span>
-                      ) : (
-                        0
-                      )}
-                    </td>
-                  ))}
+                  {years.map((year, j) => {
+                    const forecastItem = getAllForecast.find(
+                      (item) =>
+                        new Date(item.Date).toLocaleDateString("en-US", {
+                          month: "short",
+                        }) === month &&
+                        new Date(item.Date).getFullYear() === year
+                    );
+                    const cellValue = forecastItem
+                      ? renderCellValue(forecastItem)
+                      : 0;
+
+                    return <td key={j}>{cellValue}</td>;
+                  })}
                 </tr>
               ))}
             </tbody>
