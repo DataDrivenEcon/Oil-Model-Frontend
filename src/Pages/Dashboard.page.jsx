@@ -4,6 +4,8 @@ import DashboardNav from "../Components/Dashboard/DashboardNav";
 import FilterNab from "../Components/Dashboard/FilterNab";
 import ActualTable from "../Components/Dashboard/ActualTable";
 import ForecastTable from "../Components/Dashboard/ForecastTable";
+import { GiChart } from "react-icons/gi";
+import { BsGrid3X3 } from "react-icons/bs";
 
 const Dashboard = () => {
   const [getCategory, setGetCategory] = useState("Retail and Recreation");
@@ -15,6 +17,7 @@ const Dashboard = () => {
   const [subRegion, setSubRegion] = useState("");
   const [getDataType, setGetDataType] = useState("Mobility");
   const [showActualTable, setShowActualTable] = useState(true);
+  const [showChartView, setShowChartView] = useState(true); // State to toggle between chart and table view
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,8 +102,12 @@ const Dashboard = () => {
     setShowActualTable(dataType === "VMT" && getCategory === "Total");
   };
 
+  const handleToggleView = () => {
+    setShowChartView((prevShowChartView) => !prevShowChartView);
+  };
+
   return (
-    <div className='w-screen bg-gradient-to-r'>
+    <div className='w-screen bg-gradient-to-r '>
       <DashboardNav />
       <FilterNab
         setGetCategory={setGetCategory}
@@ -112,38 +119,62 @@ const Dashboard = () => {
       />
       <div>
         <div className='mx-[2%]'>
-          <Chart
-            getActualData={getActualMobility}
-            getMobilityForecast={getMobilityForecast}
-            getVMTForecast={getVMTForecast}
-            getDataType={getDataType}
-            getCategory={getCategory}
-          />
+          <div className='my-2 flex justify-end'>
+            {showChartView ? (
+              <button
+                className='flex items-center gap-2 rounded-md bg-[#009688] capitalize text-white hover:text-white px-2 py-1 hover:bg-[#015f55]'
+                onClick={handleToggleView}
+              >
+                switch to table view{" "}
+                <BsGrid3X3 className='h-[20px] w-[20px] font-black' />
+              </button>
+            ) : (
+              <button
+                className='flex items-center gap-2 rounded-md bg-[#009688] capitalize text-white hover:text-white px-2 py-1 hover:bg-[#015f55]'
+                onClick={handleToggleView}
+              >
+                switch to chart view{" "}
+                <GiChart className='h-[20px] w-[20px] font-black stroke-[35px]' />
+              </button>
+            )}
+          </div>
+          {showChartView && ( // Conditionally render the chart based on the showChartView state
+            <Chart
+              getActualData={getActualMobility}
+              getMobilityForecast={getMobilityForecast}
+              getVMTForecast={getVMTForecast}
+              getDataType={getDataType}
+              getCategory={getCategory}
+            />
+          )}
         </div>
       </div>
-      <div className='flex gap-5 items-center mx-[2%]'>
-        {showActualTable && (
+      <div className='flex gap-5 mx-[2%]'>
+        {/* Conditionally render the table based on the showChartView state */}
+        {!showChartView && showActualTable && (
           <ActualTable
             getCategory={getCategory}
             getActualData={getActualMobility}
             getDataType={getDataType}
           />
         )}
-        {getDataType === "VMT" && getCategory === "Total" && (
+        {!showChartView && getDataType === "VMT" && getCategory === "Total" && (
           <ActualTable
             getCategory={getCategory}
             getActualData={getActualMobility}
             getDataType={getDataType}
           />
         )}
-        <ForecastTable
-          getCategory={getCategory}
-          getAllForecast={
-            getDataType === "Mobility" ? getMobilityForecast : getVMTForecast
-          }
-          getDataType={getDataType}
-          subRegion={subRegion}
-        />
+        {!showChartView && (
+          <ForecastTable
+            getCategory={getCategory}
+            getAllForecast={
+              getDataType === "Mobility" ? getMobilityForecast : getVMTForecast
+            }
+            getDataType={getDataType}
+            subRegion={subRegion}
+          />
+        )}
       </div>
     </div>
   );

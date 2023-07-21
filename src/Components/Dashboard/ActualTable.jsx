@@ -52,7 +52,7 @@ const ActualTable = ({ getCategory, getActualData, getDataType }) => {
           ? `${getCategory} % change from baseline-Actuals`
           : `${getCategory} % Vehicle Miles Traveled-Actuals`}
       </p>
-      <div className='overflow-x-auto overflow-y-auto max-h-[250px]'>
+      <div className='overflow-x-auto overflow-y-auto max-h-[500px]'>
         <table className='w-full border-collapse'>
           <thead className='sticky top-0 z-50'>
             <tr>

@@ -33,13 +33,15 @@ const ForecastTable = ({ getCategory, getAllForecast, getDataType }) => {
             ? `${getCategory} % change from baseline-Forecast`
             : `${getCategory} % Vehicle Miles Traveled-Forecast`}
         </p>
-        <div className='overflow-x-auto overflow-y-auto max-h-[250px]'>
-          <table className='table w-full'>
-            <thead className='sticky top-0 z-50'>
-              <tr>
-                <th>Month</th>
+        <div className='overflow-x-auto overflow-y-auto max-h-[500px]'>
+          <table className='table w-full '>
+            <thead className='sticky top-0 z-50 '>
+              <tr className='rounded-none'>
+                <th className='rounded-none'>Month</th>
                 {years.map((year, i) => (
-                  <th key={i}>{year}</th>
+                  <th className='rounded-none' key={i}>
+                    {year}
+                  </th>
                 ))}
               </tr>
             </thead>

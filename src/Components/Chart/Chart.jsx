@@ -18,9 +18,24 @@ const Chart = ({
   getCategory,
 }) => {
   const formatDate = (date) => {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
     const dates = date?.split("T")[0];
-    const [year, month, day] = dates?.split("-");
-    return `${year}-${month}-${day}`;
+    const [year, month] = dates?.split("-");
+    const shortMonth = months[parseInt(month, 10) - 1];
+    return `${shortMonth}-${year.slice(-2)}`;
   };
 
   const filteredActualData = getActualData.filter(
@@ -47,7 +62,8 @@ const Chart = ({
                 className='color'
                 style={{ backgroundColor: entry.stroke }}
               ></span>
-              {entry.name}: {entry.value}
+              {entry.name}:{" "}
+              {getDataType === "Mobility" ? entry.payload.Value : entry.value}
             </p>
           ))}
         </div>
@@ -62,10 +78,10 @@ const Chart = ({
         {getDataType === "Mobility" ? "Mobility" : "VMT"} retail and recreation
         (Millions)
       </h1>
-      <ResponsiveContainer width='100%' height={250}>
+      <ResponsiveContainer width='100%' height={470}>
         <LineChart
           data={filteredActualData}
-          margin={{ top: 10, right: 30, left: 30, bottom: 5 }}
+          // margin={{ top: 10, right: 30, left: 30, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray='3 3' />
           <XAxis
@@ -78,17 +94,19 @@ const Chart = ({
           {showMobilityForecast && (
             <>
               <Line
+                strokeWidth={2.5}
                 type='monotone'
                 name='Forecast Mobility'
                 dataKey='Value'
-                stroke='#8884d8'
+                stroke='#009688'
                 data={filteredMobilityForecast}
               />
               <Line
+                strokeWidth={2.5}
                 type='monotone'
                 name='Actual Mobility'
                 dataKey='Value'
-                stroke='#82ca9d'
+                stroke='#FF9800'
                 data={filteredActualData}
               />
             </>
@@ -96,18 +114,20 @@ const Chart = ({
           {showVMTForecast && (
             <>
               <Line
+                strokeWidth={2.5}
                 type='monotone'
                 name='Forecast VMT'
                 dataKey='SumOfValue'
-                stroke='#8884d8'
+                stroke='#009688'
                 data={filteredVMTForecast}
               />
               {getCategory === "Total" && (
                 <Line
+                  strokeWidth={2.5}
                   type='monotone'
                   name='Actual VMT'
                   dataKey='Value'
-                  stroke='#82ca9d'
+                  stroke='#FF9800'
                   data={filteredActualData}
                 />
               )}
