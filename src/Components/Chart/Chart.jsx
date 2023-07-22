@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   CartesianGrid,
   Legend,
@@ -18,9 +18,9 @@ const Chart = ({
   getCategory,
 }) => {
   // Helper function to get the week number of a date
-  Date.prototype.getWeek = function () {
-    var onejan = new Date(this.getFullYear(), 0, 1);
-    return Math.ceil(((this - onejan) / 86400000 + onejan.getDay() + 1) / 7);
+  const getWeek = function (date) {
+    const onejan = new Date(date.getFullYear(), 0, 1);
+    return Math.ceil(((date - onejan) / 86400000 + onejan.getDay() + 1) / 7);
   };
 
   const formatDate = (date) => {
@@ -44,141 +44,88 @@ const Chart = ({
     return `${shortMonth}-${localDate.getFullYear().toString().slice(-2)}`;
   };
 
-  const filteredActualData = getActualData.filter(
-    (entry) => entry.Value !== undefined
-  );
-  const filteredMobilityForecast = getMobilityForecast.filter(
-    (entry) => entry.Value !== undefined
-  );
-  const filteredVMTForecast = getVMTForecast.filter(
-    (entry) => entry.SumOfValue !== undefined
-  );
-
-  const showMobilityForecast = getDataType === "Mobility" && true;
-  const showVMTForecast = getDataType === "VMT" && true;
-
   // Combine the dates from both datasets into a unique set
   const datesSet = new Set([
-    ...filteredActualData.map((entry) => entry.Date),
-    ...filteredMobilityForecast.map((entry) => entry.Date),
-    ...filteredVMTForecast.map((entry) => entry.Date),
+    ...getActualData.map((entry) => entry.Date),
+    ...getMobilityForecast.map((entry) => entry.Date),
+    ...getVMTForecast.map((entry) => entry.Date),
   ]);
 
   // Create an array of unique dates and sort them in ascending order
   const uniqueDates = [...datesSet].sort((a, b) => new Date(a) - new Date(b));
 
-  const chartData = uniqueDates.map((date) => {
-    let forecastVMT = null;
-    let forecastMobility = null;
+  // Define state to store filtered data based on data type and category
+  const [filteredChartData, setFilteredChartData] = useState([]);
 
-    if (getDataType === "VMT") {
-      if (getCategory === "Total") {
-        // When VMT and Total are selected together, combine the data for Total
-        const vmtForecastEntry = filteredVMTForecast.find(
+  useEffect(() => {
+    // Filter and format the data based on data type and category
+    const filteredData = uniqueDates.map((date) => {
+      let forecastVMT = null;
+      let forecastMobility = null;
+      let actualVMT = null;
+      let actualMobility = null;
+
+      if (getDataType === "VMT") {
+        if (getCategory === "Total") {
+          // When VMT and Total are selected together, combine the data for Total
+          const vmtForecastEntry = getVMTForecast.find(
+            (entry) => entry.Date === date
+          );
+          forecastVMT = vmtForecastEntry?.SumOfValue || null;
+
+          const actualVMTEntry = getActualData.find(
+            (entry) => entry.Date === date
+          );
+          actualVMT = actualVMTEntry?.Value || null;
+        } else {
+          // When VMT is selected without Total, show only VMT forecast
+          forecastVMT = getVMTForecast.find(
+            (entry) => entry.Date === date
+          )?.SumOfValue;
+
+          // If forecastVMT is not available, fallback to null for consistency
+          if (forecastVMT === undefined) {
+            forecastVMT = null;
+          }
+        }
+      } else if (getDataType === "Mobility") {
+        const actualDataEntry = getActualData.find(
           (entry) => entry.Date === date
         );
-        forecastVMT = vmtForecastEntry?.SumOfValue || null;
-      } else {
-        // When VMT is selected without Total, show only VMT forecast
-        forecastVMT = filteredVMTForecast.find(
+        const mobilityForecastEntry = getMobilityForecast.find(
           (entry) => entry.Date === date
-        )?.SumOfValue;
-      }
-    } else if (getDataType === "Mobility") {
-      const actualDataEntry = filteredActualData.find(
-        (entry) => entry.Date === date
-      );
-      const mobilityForecastEntry = filteredMobilityForecast.find(
-        (entry) => entry.Date === date
-      );
+        );
 
-      forecastMobility = mobilityForecastEntry?.Value || null;
+        forecastMobility = mobilityForecastEntry?.Value || null;
+        actualMobility = actualDataEntry?.Value || null;
+      }
 
       return {
         Date: date,
-        ActualMobility: actualDataEntry?.Value || null,
+        ForecastVMT: forecastVMT,
         ForecastMobility: forecastMobility,
+        ActualVMT: actualVMT,
+        ActualMobility: actualMobility,
       };
-    }
+    });
 
-    return {
-      Date: date,
-      ForecastVMT: forecastVMT,
-      ForecastMobility: forecastMobility,
-    };
-  });
+    // Filter out dates that have null values for all data fields
+    const filteredDataWithoutNull = filteredData.filter(
+      (entry) =>
+        entry.ActualVMT !== null ||
+        entry.ForecastVMT !== null ||
+        entry.ActualMobility !== null ||
+        entry.ForecastMobility !== null
+    );
 
-  const aggregateDataByWeek = (data) => {
-    const aggregatedData = data.reduce((result, entry) => {
-      const date = new Date(entry.Date);
-      const year = date.getFullYear();
-      const week = date.getWeek();
-
-      const key = `${year}-${week}`;
-      if (!result[key]) {
-        result[key] = {
-          Date: date, // Store the first date of the week
-          ActualMobilitySum: 0,
-          ActualMobilityCount: 0,
-          ForecastMobilitySum: 0,
-          ForecastMobilityCount: 0,
-          ActualVMTSum: 0,
-          ActualVMTCount: 0,
-          ForecastVMTSum: 0,
-          ForecastVMTCount: 0,
-        };
-      }
-
-      if (entry.ActualMobility !== null) {
-        result[key].ActualMobilitySum += entry.ActualMobility;
-        result[key].ActualMobilityCount += 1;
-      }
-
-      if (entry.ForecastMobility !== null) {
-        result[key].ForecastMobilitySum += entry.ForecastMobility;
-        result[key].ForecastMobilityCount += 1;
-      }
-
-      if (entry.ActualVMT !== null) {
-        result[key].ActualVMTSum += entry.ActualVMT;
-        result[key].ActualVMTCount += 1;
-      }
-
-      if (entry.ForecastVMT !== null) {
-        result[key].ForecastVMTSum += entry.ForecastVMT;
-        result[key].ForecastVMTCount += 1;
-      }
-
-      return result;
-    }, {});
-
-    const chartData = Object.values(aggregatedData).map((entry) => ({
-      Date: entry.Date,
-      ActualMobility: entry.ActualMobilityCount
-        ? entry.ActualMobilitySum / entry.ActualMobilityCount
-        : null,
-      ForecastMobility: entry.ForecastMobilityCount
-        ? entry.ForecastMobilitySum / entry.ForecastMobilityCount
-        : null,
-      ActualVMT: entry.ActualVMTCount
-        ? entry.ActualVMTSum / entry.ActualVMTCount
-        : null,
-      ForecastVMT: entry.ForecastVMTCount
-        ? entry.ForecastVMTSum / entry.ForecastVMTCount
-        : null,
-    }));
-
-    return chartData;
-  };
-
-  // Aggregate data for weekly intervals
-  const weeklyChartData = aggregateDataByWeek(chartData);
-
-  // Calculate the interval based on the number of unique dates
-  let xAxisInterval = "preserveStartEnd";
-  if (uniqueDates.length <= 10) {
-    xAxisInterval = "preserveStart";
-  }
+    setFilteredChartData(filteredDataWithoutNull);
+  }, [
+    getActualData,
+    getMobilityForecast,
+    getVMTForecast,
+    getDataType,
+    getCategory,
+  ]);
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -211,15 +158,22 @@ const Chart = ({
         (Millions)
       </h1>
       <ResponsiveContainer width='100%' height={470}>
-        <LineChart data={weeklyChartData}>
+        <LineChart data={filteredChartData}>
           <CartesianGrid strokeDasharray='3 3' />
           <XAxis
             dataKey='Date'
             tickFormatter={formatDate}
-            interval={xAxisInterval}
-            tick={{ transform: `translate(0, 6)`, fontSize: 10 }}
+            tick={{
+              transform: `translate(0, 6)`,
+              fontSize: 10,
+              color: "#000",
+            }}
           />
-          <YAxis />
+          <YAxis
+            tick={{ fontSize: 14 }}
+            angle={getDataType === "VMT" ? -55 : 0}
+          />
+
           <Legend />
           {getDataType === "Mobility" && (
             <>

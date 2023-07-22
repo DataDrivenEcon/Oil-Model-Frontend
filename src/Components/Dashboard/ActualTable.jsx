@@ -27,17 +27,6 @@ const ActualTable = ({ getCategory, getActualData, getDataType }) => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   };
 
-  const dates = Array.from(
-    new Set(
-      paginatedData.map((item) =>
-        new Date(item.Date).toLocaleDateString("en-US", {
-          month: "short",
-          year: "numeric",
-        })
-      )
-    )
-  );
-
   const years = Array.from(
     new Set(paginatedData.map((item) => new Date(item.Date).getFullYear()))
   );
@@ -65,33 +54,39 @@ const ActualTable = ({ getCategory, getActualData, getDataType }) => {
             </tr>
           </thead>
           <tbody>
-            {dates.map((date, index) => (
-              <tr key={index}>
-                <td className='sticky left-0 bg-gray-100 px-4 py-2'>
-                  {new Date(date).toLocaleDateString("en-US", {
-                    month: "short",
-                  })}
-                </td>
-                {years.map((year, i) => {
-                  const actualItem = paginatedData.find(
-                    (item) =>
-                      new Date(item.Date).toLocaleDateString("en-US", {
-                        month: "short",
-                        year: "numeric",
-                      }) === date && new Date(item.Date).getFullYear() === year
-                  );
-                  const cellValue = actualItem
-                    ? renderCellValue(actualItem)
-                    : 0;
+            {Array.from({ length: 12 }, (_, index) => {
+              const month = new Date(2000, index, 1).toLocaleDateString(
+                "en-US",
+                {
+                  month: "short",
+                }
+              );
+              return (
+                <tr key={index}>
+                  <td className='sticky left-0 bg-gray-100 px-4 py-2'>
+                    {month}
+                  </td>
+                  {years.map((year, i) => {
+                    const actualItem = paginatedData.find(
+                      (item) =>
+                        new Date(item.Date).toLocaleDateString("en-US", {
+                          month: "short",
+                          year: "numeric",
+                        }) === `${month} ${year}`
+                    );
+                    const cellValue = actualItem
+                      ? renderCellValue(actualItem)
+                      : "";
 
-                  return (
-                    <td key={i} className='px-4 py-2'>
-                      {cellValue}
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
+                    return (
+                      <td key={i} className='px-4 py-2'>
+                        {cellValue}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
           </tbody>
           <tfoot>
             <tr>
