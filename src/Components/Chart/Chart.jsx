@@ -24,7 +24,7 @@ const Chart = ({
   };
 
   const formatDate = (date) => {
-    // Convert the input date to local time zone
+    // Convert the input date to the local time zone
     const localDate = new Date(date);
     const months = [
       "Jan",
@@ -56,6 +56,7 @@ const Chart = ({
 
   // Define state to store filtered data based on data type and category
   const [filteredChartData, setFilteredChartData] = useState([]);
+  const [yAxisDomain, setYAxisDomain] = useState([0, 100]); // Initial Y-axis domain, you can adjust it as needed
 
   useEffect(() => {
     // Filter and format the data based on data type and category
@@ -118,6 +119,27 @@ const Chart = ({
         entry.ForecastMobility !== null
     );
 
+    // Find the minimum and maximum values of forecasted VMT data
+    let minForecastVMT = Infinity;
+    let maxForecastVMT = -Infinity;
+    filteredDataWithoutNull.forEach((entry) => {
+      if (entry.ForecastVMT !== null) {
+        minForecastVMT = Math.min(minForecastVMT, entry.ForecastVMT);
+        maxForecastVMT = Math.max(maxForecastVMT, entry.ForecastVMT);
+      }
+    });
+
+    // Adjust the Y-axis domain based on the forecasted data range
+    // You can add some buffer to the domain to avoid data points being too close to the top/bottom edge
+    const buffer = 0.1;
+    const domainMin = Math.max(
+      0,
+      minForecastVMT - buffer * (maxForecastVMT - minForecastVMT)
+    );
+    const domainMax =
+      maxForecastVMT + buffer * (maxForecastVMT - minForecastVMT);
+
+    setYAxisDomain([domainMin, domainMax]);
     setFilteredChartData(filteredDataWithoutNull);
   }, [
     getActualData,
@@ -151,6 +173,16 @@ const Chart = ({
     return null;
   };
 
+  const formatYAxisValue = (value) => {
+    if (value >= 1000000) {
+      return (value / 1000000).toFixed(1) + "m";
+    } else if (value >= 1000) {
+      return (value / 1000).toFixed(1) + "k";
+    } else {
+      return value;
+    }
+  };
+
   return (
     <div className='flex flex-col py-[0.4rem]'>
       <h1 className='ml-[4.8rem] pb-2 font-semibold text-[#5e676293] text-lg'>
@@ -170,8 +202,10 @@ const Chart = ({
             }}
           />
           <YAxis
-            tick={{ fontSize: 14 }}
-            angle={getDataType === "VMT" ? -55 : 0}
+            tick={{ fontSize: 14, transform: `translate(-0, 0)` }}
+            // angle={getDataType === "VMT" ? -55 : 0}
+            domain={yAxisDomain}
+            tickFormatter={formatYAxisValue} // Use the custom formatter function
           />
 
           <Legend />
