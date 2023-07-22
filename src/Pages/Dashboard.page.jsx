@@ -158,13 +158,17 @@ const Dashboard = () => {
             getDataType={getDataType}
           />
         )}
-        {!showChartView && getDataType === "VMT" && getCategory === "Total" && (
-          <ActualTable
-            getCategory={getCategory}
-            getActualData={getActualMobility}
-            getDataType={getDataType}
-          />
-        )}
+        {!showChartView &&
+          getDataType === "VMT" &&
+          getCategory === "Total" &&
+          !showChartView &&
+          !showActualTable && (
+            <ActualTable
+              getCategory={getCategory}
+              getActualData={getActualMobility}
+              getDataType={getDataType}
+            />
+          )}
         {!showChartView && (
           <ForecastTable
             getCategory={getCategory}
