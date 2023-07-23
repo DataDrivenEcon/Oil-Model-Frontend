@@ -186,8 +186,9 @@ const Chart = ({
   return (
     <div className='flex flex-col py-[0.4rem]'>
       <h1 className='ml-[4.8rem] pb-2 font-semibold text-[#5e676293] text-lg'>
-        {getDataType === "Mobility" ? "Mobility" : "VMT"} retail and recreation
-        (Millions)
+        {getDataType === "VMT"
+          ? `VMT ${getCategory} (Millions)`
+          : `Mobility ${getCategory} (percent change from baseline)`}
       </h1>
       <ResponsiveContainer width='100%' height={470}>
         <LineChart data={filteredChartData}>
