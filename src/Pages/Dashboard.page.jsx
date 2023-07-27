@@ -107,7 +107,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className='w-screen bg-gradient-to-r '>
+    <div className='bg-gradient-to-r '>
       <DashboardNav />
       <FilterNab
         setGetCategory={setGetCategory}
