@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 const ActualTable = ({ getCategory, getActualData, getDataType }) => {
   const renderCellValue = (item) => {
@@ -11,28 +11,10 @@ const ActualTable = ({ getCategory, getActualData, getDataType }) => {
     }
   };
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 35;
-  const totalItems = getActualData.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedData = getActualData.slice(startIndex, endIndex);
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
-  };
-
+  // Extract unique years from the data
   const years = Array.from(
-    new Set(paginatedData.map((item) => new Date(item.Date).getFullYear()))
+    new Set(getActualData.map((item) => item.Date.split("-")[0]))
   );
-
-  const shouldRenderPrevButton = currentPage > 1;
-  const shouldRenderNextButton = currentPage < totalPages;
 
   return (
     <div className='w-full shadow-lg py-2 overflow-hidden'>
@@ -46,40 +28,40 @@ const ActualTable = ({ getCategory, getActualData, getDataType }) => {
           <thead className='sticky top-0 z-50'>
             <tr>
               <th className='sticky left-0 bg-gray-200 px-4 py-2'>Month</th>
-              {years.map((year, i) => (
-                <th key={i} className='bg-gray-200 px-4 py-2'>
+              {years.map((year) => (
+                <th key={year} className='bg-gray-200 px-4 py-2'>
                   {year}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {Array.from({ length: 12 }, (_, index) => {
-              const month = new Date(2000, index, 1).toLocaleDateString(
+            {Array.from({ length: 12 }, (_, monthIndex) => {
+              const month = new Date(2000, monthIndex, 1).toLocaleDateString(
                 "en-US",
                 {
                   month: "short",
                 }
               );
               return (
-                <tr key={index}>
+                <tr key={month}>
                   <td className='sticky left-0 bg-gray-100 px-4 py-2'>
                     {month}
                   </td>
-                  {years.map((year, i) => {
-                    const actualItem = paginatedData.find(
+                  {years.map((year) => {
+                    const actualItem = getActualData.find(
                       (item) =>
-                        new Date(item.Date).toLocaleDateString("en-US", {
-                          month: "short",
-                          year: "numeric",
-                        }) === `${month} ${year}`
+                        item.Date ===
+                        `${year}-${(monthIndex + 1)
+                          .toString()
+                          .padStart(2, "0")}-01`
                     );
                     const cellValue = actualItem
                       ? renderCellValue(actualItem)
                       : "";
 
                     return (
-                      <td key={i} className='px-4 py-2'>
+                      <td key={`${year}-${monthIndex}`} className='px-4 py-2'>
                         {cellValue}
                       </td>
                     );
@@ -88,30 +70,6 @@ const ActualTable = ({ getCategory, getActualData, getDataType }) => {
               );
             })}
           </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan={years.length + 1}>
-                <div className='flex justify-center mt-4'>
-                  {shouldRenderPrevButton && (
-                    <button
-                      className='bg-gray-200 hover:bg-gray-300 font-bold py-2 px-4 rounded mr-2'
-                      onClick={handlePrevPage}
-                    >
-                      Previous
-                    </button>
-                  )}
-                  {shouldRenderNextButton && (
-                    <button
-                      className='bg-gray-200 hover:bg-gray-300 font-bold py-2 px-4 rounded'
-                      onClick={handleNextPage}
-                    >
-                      Next
-                    </button>
-                  )}
-                </div>
-              </td>
-            </tr>
-          </tfoot>
         </table>
       </div>
     </div>

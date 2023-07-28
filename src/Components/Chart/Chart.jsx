@@ -24,8 +24,9 @@ const Chart = ({
   };
 
   const formatDate = (date) => {
-    // Convert the input date to the local time zone
-    const localDate = new Date(date);
+    // Parse the input date string to a Date object
+    const parsedDate = new Date(date);
+
     const months = [
       "Jan",
       "Feb",
@@ -40,8 +41,9 @@ const Chart = ({
       "Nov",
       "Dec",
     ];
-    const shortMonth = months[localDate.getMonth()];
-    return `${shortMonth}-${localDate.getFullYear().toString().slice(-2)}`;
+
+    const shortMonth = months[parsedDate.getUTCMonth()];
+    return `${shortMonth}-${parsedDate.getUTCFullYear().toString().slice(-2)}`;
   };
 
   // Combine the dates from both datasets into a unique set
