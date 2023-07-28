@@ -1,14 +1,14 @@
 import React from "react";
 
 const ForecastTable = ({ getCategory, getAllForecast, getDataType }) => {
-  const renderCellValue = (item, month, year) => {
-    const forecastItem = getAllForecast.find(
-      (item) =>
-        new Date(item.Date).toLocaleDateString("en-US", {
-          month: "short",
-          year: "numeric",
-        }) === `${month} ${year}`
-    );
+  const renderCellValue = (month, year) => {
+    const forecastItem = getAllForecast.find((item) => {
+      const itemDate = new Date(item.Date);
+      return (
+        itemDate.getUTCMonth() === months.indexOf(month) &&
+        itemDate.getUTCFullYear() === year
+      );
+    });
 
     if (getDataType === "Mobility") {
       return forecastItem ? forecastItem.Value || "" : "";
@@ -35,7 +35,7 @@ const ForecastTable = ({ getCategory, getAllForecast, getDataType }) => {
   ];
 
   const years = Array.from(
-    new Set(getAllForecast.map((item) => new Date(item.Date).getFullYear()))
+    new Set(getAllForecast.map((item) => new Date(item.Date).getUTCFullYear()))
   );
 
   return (
@@ -63,11 +63,7 @@ const ForecastTable = ({ getCategory, getAllForecast, getDataType }) => {
                 <tr key={i}>
                   <td className='bg-gray-100'>{month}</td>
                   {years.map((year, j) => {
-                    const cellValue = renderCellValue(
-                      getAllForecast,
-                      month,
-                      year
-                    );
+                    const cellValue = renderCellValue(month, year);
                     return <td key={j}>{cellValue}</td>;
                   })}
                 </tr>
