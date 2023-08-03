@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import ReactGA from "react-ga4";
 const FilterNab = ({
   setGetDate,
   setGetCategory,
@@ -46,6 +46,7 @@ const FilterNab = ({
     allRegion();
     allSubRegion();
   }, [getRegion]);
+
   return (
     <div className='w-full mt-2'>
       <div className='flex mx-[2%] justify-between items-center'>
@@ -63,7 +64,14 @@ const FilterNab = ({
               />
             </svg>
             <select
-              onChange={(e) => setGetRegion(e.target.value)}
+              onChange={(e) => {
+                setGetRegion(e.target.value);
+                ReactGA.event({
+                  category: "Total Data-Filter",
+                  action: "Region Selected",
+                });
+                console.log(ReactGA.event);
+              }}
               className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
             >
               <option disabled>Select region</option>
@@ -87,7 +95,13 @@ const FilterNab = ({
               />
             </svg>
             <select
-              onChange={(e) => setSubRegion(e.target.value)}
+              onChange={(e) => {
+                setSubRegion(e.target.value);
+                ReactGA.event({
+                  category: "Total Data-Filter",
+                  action: "Sub-Region Selected",
+                });
+              }}
               disabled={allRegion ? false : true}
               className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
             >
@@ -110,7 +124,13 @@ const FilterNab = ({
               />
             </svg>
             <select
-              onChange={(e) => setGetDate(e.target.value)}
+              onChange={(e) => {
+                setGetDate(e.target.value);
+                ReactGA.event({
+                  category: "Total Data-Filter",
+                  action: "Date Selected",
+                });
+              }}
               className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
             >
               <option disabled>Monthly/Weekly</option>
@@ -134,7 +154,13 @@ const FilterNab = ({
               />
             </svg>
             <select
-              onChange={(e) => setGetDataType(e.target.value)}
+              onChange={(e) => {
+                setGetDataType(e.target.value);
+                ReactGA.event({
+                  category: "Total Data-Filter",
+                  action: "Data Type Selected",
+                });
+              }}
               className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
             >
               <option disabled>VMT/Mobility</option>
@@ -155,7 +181,13 @@ const FilterNab = ({
               />
             </svg>
             <select
-              onChange={(e) => setGetCategory(e.target.value)}
+              onChange={(e) => {
+                setGetCategory(e.target.value);
+                ReactGA.event({
+                  category: "Total Data-Filter",
+                  action: "Category Selected",
+                });
+              }}
               className='border border-gray-300 rounded text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none'
             >
               <option disabled>Select categories</option>
