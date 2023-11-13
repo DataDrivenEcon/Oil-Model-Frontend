@@ -55,6 +55,9 @@ const Navbar = () => {
                         <Link to={"/verify-email"}>Verify email</Link>
                       </li>
                     )}
+                    <li>
+                      <Link to={"/admin-dashboard"}>Admin Dashboard</Link>
+                    </li>
                     <li onClick={() => signOut(auth)}>
                       <a>Logout</a>
                     </li>

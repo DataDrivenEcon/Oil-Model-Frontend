@@ -9,6 +9,7 @@ import EmailVerification from "./Pages/EmailVerification.page";
 import RequireAuth from "./Hooks/RequireAuth";
 import Dashboard from "./Pages/Dashboard.page";
 import ReactGA from "react-ga4";
+import AdminDashboard from "./Pages/AdminDashboard.page";
 function App() {
   ReactGA.initialize(import.meta.env.VITE_GA_TRACKING_ID);
   ReactGA.send(window.location.pathname + window.location.search);
@@ -25,6 +26,14 @@ function App() {
           element={
             <RequireAuth>
               <Dashboard />
+            </RequireAuth>
+          }
+        ></Route>
+        <Route
+          path='/admin-dashboard'
+          element={
+            <RequireAuth>
+              <AdminDashboard />
             </RequireAuth>
           }
         ></Route>
