@@ -43,14 +43,17 @@ const LogIn = () => {
   useEffect(() => {
     if (user || loginUser) {
       // Call the post API here to get the token
-      const email = user?.user?.email || loginUser?.user?.email;
-
-      fetch("https://gary-eisen-project-backend.vercel.app/login", {
+      const userInfo = {
+        email: user?.user?.email || loginUser?.user?.email,
+        name: user?.user?.displayName,
+      };
+      console.log(user, loginUser);
+      fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }), // Include any required data
+        body: JSON.stringify({ userInfo }), // Include any required data
       })
         .then((response) => response.json())
         .then((data) => {

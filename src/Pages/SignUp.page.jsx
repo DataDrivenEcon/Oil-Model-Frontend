@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import {
   useSignInWithGoogle,
   useCreateUserWithEmailAndPassword,
@@ -8,10 +8,11 @@ import {
 import auth from "../firebase.init";
 import Loading from "../Components/Loading";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 const SignUp = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [userName, setUserName] = useState("");
   let from = location.state?.from?.pathname || "/";
   const {
     register,
@@ -23,7 +24,8 @@ const SignUp = () => {
   const [createUserWithEmailAndPassword, createUser, createLoading] =
     useCreateUserWithEmailAndPassword(auth);
 
-  const onSubmit = ({ email, password }) => {
+  const onSubmit = ({ email, password, fullName }) => {
+    setUserName(fullName);
     createUserWithEmailAndPassword(email, password);
   };
   if (loading || createLoading) {
@@ -32,15 +34,19 @@ const SignUp = () => {
 
   useEffect(() => {
     if (user || createUser) {
+      console.log(createUser?.user?.displayName, createUser?.user?.email);
       // Call the post API here to get the token
-      const email = user?.user?.email || createUser?.user?.email;
+      const userInfo = {
+        email: user?.user?.email || createUser?.user?.email,
+        name: user?.user?.displayName || userName,
+      };
 
-      fetch("https://gary-eisen-project-backend.vercel.app/login", {
+      fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }), // Include any required data
+        body: JSON.stringify({ userInfo }), // Include any required data
       })
         .then((response) => response.json())
         .then((data) => {
