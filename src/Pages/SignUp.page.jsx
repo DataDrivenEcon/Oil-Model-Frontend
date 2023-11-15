@@ -34,7 +34,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (user || createUser) {
-      console.log(createUser?.user?.displayName, createUser?.user?.email);
+      console.log(createUser?.user?.displayName, userName);
       // Call the post API here to get the token
       const userInfo = {
         email: user?.user?.email || createUser?.user?.email,

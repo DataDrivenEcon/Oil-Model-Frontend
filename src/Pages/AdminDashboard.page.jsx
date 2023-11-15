@@ -1,16 +1,94 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiFilterAlt } from "react-icons/bi";
+import Row from "../Components/Dashboard/Row";
+import Loading from "../Components/Loading";
 const AdminDashboard = () => {
+  const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const toggleFilters = () => {
     setShowFilters(!showFilters);
   };
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("ascending");
   const handleOptionClick = (index) => {
     setSelectedOption(index);
   };
+  const [user, setUser] = useState([]);
+  const [status, setStatus] = useState("");
+  const [selectedRows, setSelectedRows] = useState([]);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `http://localhost:3000/user?filter=${selectedOption}`
+        );
+        const data = await response.json();
+        setUser(data.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, [status, selectedOption]);
+
+  const handleRowSelection = (email) => {
+    // Check if the email is already selected, if yes, remove it; if not, add it
+    setSelectedRows((prevSelectedRows) =>
+      prevSelectedRows.includes(email)
+        ? prevSelectedRows.filter((row) => row !== email)
+        : [...prevSelectedRows, email]
+    );
+  };
+
+  const handleHeaderCheckboxChange = (e) => {
+    // Select or deselect all rows based on the state of the header checkbox
+    if (e.target.checked) {
+      // Select all rows
+      setSelectedRows(user.map((user) => user.email));
+    } else {
+      // Deselect all rows
+      setSelectedRows([]);
+    }
+  };
+
+  const handleUpdateButtonClick = async (e) => {
+    e.preventDefault();
+
+    const updateStatus = async () => {
+      try {
+        setLoading(true);
+        const status = e.target.status.value;
+        const response = await fetch(
+          "http://localhost:3000/user/updateUserStatus/bulk",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ status, selectedRows }),
+          }
+        );
+
+        const data = await response.json();
+
+        if (data.status) {
+          setStatus(status);
+        }
+      } catch (error) {
+        console.error("Error updating status:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    await updateStatus(); // Wait for the updateStatus function to complete
+  };
+
   return (
-    <div className='pt-4 pb-9 px-9 w-screen'>
+    <div className='pt-4 pb-9 px-9 w-full'>
       <h1 className='text-[28px] font-medium '>User's</h1>
       <form className='flex gap-6 mt-9'>
         <input
@@ -22,17 +100,26 @@ const AdminDashboard = () => {
           search
         </button>
       </form>
-      <form action='' className='pt-9'>
+      <form onSubmit={handleUpdateButtonClick} className='pt-9'>
         <div className='flex justify-between items-center'>
           <div>
             <label htmlFor=''> Bulk Update:</label>
             <div className='flex gap-2 items-center'>
-              <select className='select select-bordered w-full max-w-xs'>
+              <select
+                name='status'
+                className='select select-bordered w-full max-w-xs'
+              >
                 <option>Pending</option>
                 <option>Verified</option>
                 <option>Closed</option>
               </select>
-              <button className='btn btn-success'>save</button>
+              <button
+                disabled={selectedRows.length < 2}
+                type='submit'
+                className='btn btn-success'
+              >
+                save
+              </button>
             </div>
           </div>
           <div className='flex gap-4 items-center'>
@@ -40,41 +127,47 @@ const AdminDashboard = () => {
               <div className='flex gap-2'>
                 <div
                   className={`flex items-center ${
-                    selectedOption === 0 ? "bg-sky-200" : "bg-slate-300"
+                    selectedOption === "ascending"
+                      ? "bg-sky-200"
+                      : "bg-slate-300"
                   } py-1 px-5 rounded cursor-pointer font-medium`}
-                  onClick={() => handleOptionClick(0)}
+                  onClick={() => handleOptionClick("ascending")}
                 >
                   Ascending
                 </div>
                 <div
                   className={`flex items-center ${
-                    selectedOption === 1 ? "bg-sky-200" : "bg-slate-300"
+                    selectedOption === "descending"
+                      ? "bg-sky-200"
+                      : "bg-slate-300"
                   } py-1 px-5 rounded cursor-pointer font-medium`}
-                  onClick={() => handleOptionClick(1)}
+                  onClick={() => handleOptionClick("descending")}
                 >
                   Descending
                 </div>
                 <div
                   className={`flex items-center ${
-                    selectedOption === 2 ? "bg-sky-200" : "bg-slate-300"
+                    selectedOption === "verified"
+                      ? "bg-sky-200"
+                      : "bg-slate-300"
                   } py-1 px-5 rounded cursor-pointer font-medium`}
-                  onClick={() => handleOptionClick(2)}
+                  onClick={() => handleOptionClick("verified")}
                 >
-                  Verifired
+                  Verified
                 </div>
                 <div
                   className={`flex items-center ${
-                    selectedOption === 3 ? "bg-sky-200" : "bg-slate-300"
+                    selectedOption === "pending" ? "bg-sky-200" : "bg-slate-300"
                   } py-1 px-5 rounded cursor-pointer font-medium`}
-                  onClick={() => handleOptionClick(3)}
+                  onClick={() => handleOptionClick("pending")}
                 >
                   Pending
                 </div>
                 <div
                   className={`flex items-center ${
-                    selectedOption === 4 ? "bg-sky-200" : "bg-slate-300"
+                    selectedOption === "closed" ? "bg-sky-200" : "bg-slate-300"
                   } py-1 px-5 rounded cursor-pointer font-medium`}
-                  onClick={() => handleOptionClick(4)}
+                  onClick={() => handleOptionClick("closed")}
                 >
                   Closed
                 </div>
@@ -88,46 +181,52 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
-        <div className='overflow-x-auto mt-4'>
-          <table className='table w-full'>
-            {/* head */}
-            <thead>
-              <tr className='text-[14px] font-normal text-[#464646]'>
-                <th>
-                  <input type='checkbox' className='checkbox' />
-                </th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Update Status</th>
-                <th>Membership Status</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* row 1 */}
-              <tr className='bg-base-200'>
-                <th>
-                  <input type='checkbox' className='checkbox' />
-                </th>
-                <td>khalid</td>
-                <td>khalid100umar@gmail.com</td>
-                <td>
-                  <select className='select select-bordered '>
-                    <option>Pending</option>
-                    <option>Verified</option>
-                    <option>Closed</option>
-                  </select>
-                </td>
-                <td>
-                  <p className='bg-[#D4F8D3] rounded-full px-3 py-1 w-fit '>
-                    verified
-                  </p>
-                </td>
-                <td>12 March, 2023 </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        {user.length > 0 ? (
+          <div className='overflow-x-auto mt-4'>
+            {loading ? (
+              <Loading />
+            ) : (
+              <table className='table w-full'>
+                {/* head */}
+                <thead>
+                  <tr className='text-[14px] font-normal text-[#464646]'>
+                    <th>
+                      <input
+                        onChange={handleHeaderCheckboxChange}
+                        type='checkbox'
+                        className='checkbox'
+                      />
+                    </th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Update Status</th>
+                    <th>Membership Status</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {user.map((user) => {
+                    return (
+                      <Row
+                        key={user.id}
+                        user={user}
+                        setStatus={setStatus}
+                        selectedRows={selectedRows}
+                        handleRowSelection={handleRowSelection}
+                      />
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
+          </div>
+        ) : (
+          <img
+            className='w-full h-[550px]'
+            src='../../public/images/no-data-found.jpg'
+            alt='no data found'
+          />
+        )}
       </form>
     </div>
   );
