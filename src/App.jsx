@@ -30,7 +30,7 @@ function App() {
           }
         ></Route>
         <Route
-          path='/admin-dashboard'
+          path='/adminDashboard'
           element={
             <RequireAuth>
               <AdminDashboard />

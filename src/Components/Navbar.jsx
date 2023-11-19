@@ -2,10 +2,29 @@ import { Link } from "react-router-dom";
 import auth from "../firebase.init";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut } from "firebase/auth";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
   const [user] = useAuthState(auth);
-
+  const [admin, setAdmin] = useState(false);
+  useEffect(() => {
+    const fetchApproveUsers = async () => {
+      if (user) {
+        try {
+          const response = await fetch(
+            `http://localhost:3000/user?email=${user.email}`
+          );
+          const data = await response.json();
+          if (data.data.length > 0) {
+            setAdmin(data.data[0].membership_status === "admin" ? true : false);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+    fetchApproveUsers();
+  }, [user]);
   return (
     <header className='bg-transparent pt-5'>
       <nav className='mx-[7.5%]'>
@@ -55,9 +74,11 @@ const Navbar = () => {
                         <Link to={"/verify-email"}>Verify email</Link>
                       </li>
                     )}
-                    <li>
-                      <Link to={"/admin-dashboard"}>Admin Dashboard</Link>
-                    </li>
+                    {admin && (
+                      <li>
+                        <Link to={"/adminDashboard"}>Admin Dashboard</Link>
+                      </li>
+                    )}
                     <li onClick={() => signOut(auth)}>
                       <a>Logout</a>
                     </li>
