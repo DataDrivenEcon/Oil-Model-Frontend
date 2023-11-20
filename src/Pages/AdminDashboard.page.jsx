@@ -3,17 +3,19 @@ import { BiFilterAlt } from "react-icons/bi";
 import Row from "../Components/Dashboard/Row";
 import Loading from "../Components/Loading";
 import { Link } from "react-router-dom";
+import { IoIosArrowDropright } from "react-icons/io";
 const AdminDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const toggleFilters = () => {
     setShowFilters(!showFilters);
   };
+  const [userPage, setUserPage] = useState(1);
   const [selectedOption, setSelectedOption] = useState("ascending");
   const handleOptionClick = (index) => {
     setSelectedOption(index);
   };
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState("");
   const [status, setStatus] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
   const [search, setSearch] = useState("");
@@ -25,12 +27,18 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        const token = localStorage.getItem("token");
         setLoading(true);
         const response = await fetch(
-          `http://localhost:3000/user?filter=${selectedOption}&email=${search}`
+          `https://gary-eisen-project-backend.vercel.app/user?filter=${selectedOption}&email=${search}&page=${userPage}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Include the token in the headers
+            },
+          }
         );
         const data = await response.json();
-        setUser(data.data);
+        setUser(data);
       } catch (error) {
         console.error("Error fetching user data:", error);
       } finally {
@@ -39,7 +47,7 @@ const AdminDashboard = () => {
     };
 
     fetchUsers();
-  }, [status, selectedOption, search]);
+  }, [status, selectedOption, search, userPage]);
 
   const handleRowSelection = (email) => {
     // Check if the email is already selected, if yes, remove it; if not, add it
@@ -51,12 +59,13 @@ const AdminDashboard = () => {
   };
 
   const handleHeaderCheckboxChange = (e) => {
-    // Select or deselect all rows based on the state of the header checkbox
+    const usersToSelect = user.data.filter(
+      (user) => user.membership_status !== "Admin"
+    );
+
     if (e.target.checked) {
-      // Select all rows
-      setSelectedRows(user.map((user) => user.email));
+      setSelectedRows(usersToSelect.map((user) => user.email));
     } else {
-      // Deselect all rows
       setSelectedRows([]);
     }
   };
@@ -69,7 +78,7 @@ const AdminDashboard = () => {
         setLoading(true);
         const status = e.target.status.value;
         const response = await fetch(
-          "http://localhost:3000/user/updateUserStatus/bulk",
+          "https://gary-eisen-project-backend.vercel.app/user/updateUserStatus/bulk",
           {
             method: "POST",
             headers: {
@@ -93,6 +102,7 @@ const AdminDashboard = () => {
 
     await updateStatus(); // Wait for the updateStatus function to complete
   };
+
   return (
     <>
       <div className='pt-4 pb-9 px-9 w-full'>
@@ -199,7 +209,7 @@ const AdminDashboard = () => {
               </div>
             </div>
           </div>
-          {user?.length > 0 ? (
+          {user?.data?.length > 0 ? (
             <div className='overflow-x-auto mt-4'>
               {loading ? (
                 <Loading />
@@ -223,7 +233,7 @@ const AdminDashboard = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {user.map((user) => {
+                    {user.data.map((user) => {
                       return (
                         <Row
                           key={user.id}
@@ -236,6 +246,24 @@ const AdminDashboard = () => {
                     })}
                   </tbody>
                 </table>
+              )}
+              {user.totalPage > 1 && (
+                <div className='flex justify-end items-center gap-2'>
+                  <IoIosArrowDropright
+                    onClick={() => setUserPage(userPage - 1)}
+                    className={`${
+                      userPage == 1 && "hidden"
+                    } rotate-180 w-10 h-10 bg-transparent hover:bg-black hover:text-white cursor-pointer rounded-full`}
+                  />{" "}
+                  <IoIosArrowDropright
+                    onClick={() => {
+                      setUserPage(userPage + 1);
+                    }}
+                    className={`${
+                      userPage == user.totalPage && "hidden"
+                    } w-10 h-10 bg-transparent hover:bg-black hover:text-white cursor-pointer rounded-full`}
+                  />
+                </div>
               )}
             </div>
           ) : (

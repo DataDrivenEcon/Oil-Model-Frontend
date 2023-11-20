@@ -1,12 +1,15 @@
 const Row = ({ user, selectedRows, handleRowSelection, setStatus }) => {
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
+    const token = localStorage.getItem("token");
     const response = await fetch(
-      `http://localhost:3000/user/updateUserStatus`,
+      `https://gary-eisen-project-backend.vercel.app/user/updateUserStatus`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+
+          Authorization: `Bearer ${token}`, // Include the token in the headers
         },
         body: JSON.stringify({ status: newStatus, id: user.id }),
       }
@@ -22,12 +25,14 @@ const Row = ({ user, selectedRows, handleRowSelection, setStatus }) => {
   return (
     <tr className='bg-base-200'>
       <th>
-        <input
-          type='checkbox'
-          className='checkbox'
-          checked={selectedRows.includes(user.email)}
-          onChange={() => handleRowSelection(user.email)}
-        />
+        {user.membership_status !== "Admin" && (
+          <input
+            type='checkbox'
+            className='checkbox'
+            checked={selectedRows.includes(user.email)}
+            onChange={() => handleRowSelection(user.email)}
+          />
+        )}
       </th>
       <td>{user.name}</td>
       <td>{user.email}</td>
@@ -35,7 +40,11 @@ const Row = ({ user, selectedRows, handleRowSelection, setStatus }) => {
         <select
           onChange={handleStatusChange}
           className='select select-bordered '
+          disabled={user.membership_status === "Admin"}
         >
+          {user.membership_status === "Admin" && (
+            <option defaultValue={"Admin"}>Admin</option>
+          )}
           <option>Pending</option>
           <option>Verified</option>
           <option>Closed</option>
@@ -52,6 +61,9 @@ const Row = ({ user, selectedRows, handleRowSelection, setStatus }) => {
           } ${
             user.membership_status === "closed" &&
             "bg-[#EDE7FB] rounded-full px-3 py-1 w-fit flex justify-center items-center"
+          } ${
+            user.membership_status === "Admin" &&
+            "bg-success rounded-full px-3 py-1 w-fit flex justify-center items-center"
           }`}
         >
           {user.membership_status}

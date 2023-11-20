@@ -12,8 +12,14 @@ const RequireAuth = ({ children }) => {
     const fetchApproveUsers = async () => {
       if (user) {
         try {
+          const token = localStorage.getItem("token"); // Get the token from local storage
           const response = await fetch(
-            `http://localhost:3000/user?email=${user.email}`
+            `https://gary-eisen-project-backend.vercel.app/user?email=${user.email}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the headers
+              },
+            }
           );
           const data = await response.json();
           if (data.data.length > 0) {

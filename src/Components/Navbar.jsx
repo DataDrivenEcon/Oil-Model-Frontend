@@ -11,12 +11,18 @@ const Navbar = () => {
     const fetchApproveUsers = async () => {
       if (user) {
         try {
+          const token = localStorage.getItem("token");
           const response = await fetch(
-            `http://localhost:3000/user?email=${user.email}`
+            `https://gary-eisen-project-backend.vercel.app/user?email=${user.email}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the headers
+              },
+            }
           );
           const data = await response.json();
           if (data.data.length > 0) {
-            setAdmin(data.data[0].membership_status === "admin" ? true : false);
+            setAdmin(data.data[0].membership_status === "Admin" ? true : false);
           }
         } catch (error) {
           console.error("Error fetching user data:", error);

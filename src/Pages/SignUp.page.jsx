@@ -41,7 +41,7 @@ const SignUp = () => {
         name: user?.user?.displayName || userName,
       };
 
-      fetch("http://localhost:3000/login", {
+      fetch("https://gary-eisen-project-backend.vercel.app/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
