@@ -138,9 +138,6 @@ const AdminDashboard = () => {
                   name='status'
                   className='select select-bordered w-full max-w-xs'
                 >
-                  <option selected disabled>
-                    choose one
-                  </option>
                   <option>Pending</option>
                   <option>Verified</option>
                   <option>Closed</option>
