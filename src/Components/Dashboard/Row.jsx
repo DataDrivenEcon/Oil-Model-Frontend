@@ -25,7 +25,7 @@ const Row = ({ user, selectedRows, handleRowSelection, setStatus }) => {
   };
   const [optionSerial, setOptionSerial] = useState([]);
   useEffect(() => {
-    const status = ["pending", "verified", "closed", "Admin"];
+    const status = ["pending", "verified", "closed"];
     const findStatus = status.find((item) => item === user.membership_status);
     const newStatus = new Set([findStatus, ...status]);
     setOptionSerial([...newStatus]);
@@ -51,8 +51,11 @@ const Row = ({ user, selectedRows, handleRowSelection, setStatus }) => {
           className='select select-bordered '
           disabled={user.membership_status === "Admin"}
         >
-          {optionSerial.map((item) => (
-            <option value={item}>{item}</option>
+          {user.membership_status === "Admin" && <option>Admin</option>}
+          {optionSerial.map((item, i) => (
+            <option key={i} value={item}>
+              {item}
+            </option>
           ))}
         </select>
       </td>
