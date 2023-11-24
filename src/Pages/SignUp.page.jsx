@@ -173,12 +173,12 @@ const SignUp = () => {
           >
             <div className='flex items-center justify-center'>
               <FcGoogle className='w-6 h-6' />
-              <span className='ml-4'>Sing Up with Google</span>
+              <span className='ml-4'>Sign Up with Google</span>
             </div>
           </button>
 
           <p className='mt-8 text-center'>
-            Already have an account please?{" "}
+           Already have an account? Please{" "}
             <Link
               to={"/login"}
               className='text-blue-500 hover:text-blue-700 font-semibold'
