@@ -277,7 +277,7 @@ const AdminDashboard = () => {
           ) : (
             <img
               className='w-full h-[550px]'
-              src='../../public/images/no-data-found.jpg'
+              src='/public/images/no-data-found.jpg'
               alt='no data found'
             />
           )}
