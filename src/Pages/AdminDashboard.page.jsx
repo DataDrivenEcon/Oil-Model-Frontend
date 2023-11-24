@@ -4,6 +4,7 @@ import Row from "../Components/Dashboard/Row";
 import Loading from "../Components/Loading";
 import { Link } from "react-router-dom";
 import { IoIosArrowDropright } from "react-icons/io";
+import UserProfile from "../Components/UserProfile";
 const AdminDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
@@ -106,9 +107,12 @@ const AdminDashboard = () => {
   return (
     <>
       <div className='pt-4 pb-9 px-9 w-full'>
-        <Link to={"/"} className='text-[28px] font-medium '>
-          VMT&Mobility Website User's
-        </Link>
+        <div className='flex justify-between items-center'>
+          <Link to={"/"} className='text-[28px] font-medium '>
+            VMT&Mobility Website User's
+          </Link>
+          <UserProfile />
+        </div>
         <form onSubmit={handleSearch} className='flex gap-6 mt-9'>
           <input
             onChange={(e) =>

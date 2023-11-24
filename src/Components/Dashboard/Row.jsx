@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 const Row = ({ user, selectedRows, handleRowSelection, setStatus }) => {
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
@@ -21,6 +23,13 @@ const Row = ({ user, selectedRows, handleRowSelection, setStatus }) => {
       console.error("Server responded with an error:", data.error);
     }
   };
+  const [optionSerial, setOptionSerial] = useState([]);
+  useEffect(() => {
+    const status = ["pending", "verified", "closed", "Admin"];
+    const findStatus = status.find((item) => item === user.membership_status);
+    const newStatus = new Set([findStatus, ...status]);
+    setOptionSerial([...newStatus]);
+  }, []);
 
   return (
     <tr className='bg-base-200'>
@@ -42,12 +51,9 @@ const Row = ({ user, selectedRows, handleRowSelection, setStatus }) => {
           className='select select-bordered '
           disabled={user.membership_status === "Admin"}
         >
-          {user.membership_status === "Admin" && (
-            <option defaultValue={"Admin"}>Admin</option>
-          )}
-          <option>Pending</option>
-          <option>Verified</option>
-          <option>Closed</option>
+          {optionSerial.map((item) => (
+            <option value={item}>{item}</option>
+          ))}
         </select>
       </td>
       <td>
