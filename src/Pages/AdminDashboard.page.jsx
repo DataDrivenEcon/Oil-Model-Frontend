@@ -24,11 +24,10 @@ const AdminDashboard = () => {
     e.preventDefault();
     setSearch(e.target.email.value);
   };
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const token = localStorage.getItem("token");
         setLoading(true);
         const response = await fetch(
           `https://gary-eisen-project-backend.vercel.app/user?filter=${selectedOption}&email=${search}&page=${userPage}`,
@@ -84,6 +83,7 @@ const AdminDashboard = () => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({ status, selectedRows }),
           }
@@ -93,6 +93,7 @@ const AdminDashboard = () => {
 
         if (data.status) {
           setStatus(status);
+          setSelectedRows([]);
         }
       } catch (error) {
         console.error("Error updating status:", error);
@@ -137,6 +138,9 @@ const AdminDashboard = () => {
                   name='status'
                   className='select select-bordered w-full max-w-xs'
                 >
+                  <option selected disabled>
+                    choose one
+                  </option>
                   <option>Pending</option>
                   <option>Verified</option>
                   <option>Closed</option>
