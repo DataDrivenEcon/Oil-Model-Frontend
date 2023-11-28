@@ -26,7 +26,7 @@ const AdminAuth = ({ children }) => {
         setLoading(false);
       }
     };
-
+// comments for multiline
     if (user) {
       fetchAdmin();
     } else {
