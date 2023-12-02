@@ -15,7 +15,7 @@ const AdminAuth = ({ children }) => {
     const fetchAdmin = async () => {
       try {
         const userStatus = await useFetchApproveUser(user?.email);
-        if (userStatus === "Admin") {
+        if (userStatus.membership_status === "Admin") {
           setIsAdmin(true);
         } else {
           setIsAdmin(false);
@@ -26,7 +26,7 @@ const AdminAuth = ({ children }) => {
         setLoading(false);
       }
     };
-// comments for multiline
+    // comments for multiline
     if (user) {
       fetchAdmin();
     } else {
