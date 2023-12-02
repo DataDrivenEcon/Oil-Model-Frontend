@@ -5,6 +5,7 @@ import auth from "../firebase.init";
 import Loading from "../Components/Loading";
 import { useFetchApproveUser } from "./AdminDashboardHook";
 import { useEffect, useState } from "react";
+import CompanyNameInputForm from "../Components/Dashboard/CompanyNameInputForm";
 
 const RequireAuth = ({ children }) => {
   const [user, loading] = useAuthState(auth);
@@ -16,12 +17,12 @@ const RequireAuth = ({ children }) => {
       setApproveUser(status);
     };
     fetchApproveUsers();
-  }, [approveUser, user]);
+  }, [user]);
 
   if (!approveUser || approveUser) {
-    if (approveUser === "closed") {
+    if (approveUser?.membership_status === "closed") {
       return <h1>your not allow to use this website</h1>;
-    } else if (approveUser === "pending") {
+    } else if (approveUser?.membership_status === "pending") {
       return (
         <h1>
           your account is pending. please wait few hour. support team will be
@@ -31,6 +32,10 @@ const RequireAuth = ({ children }) => {
     } else if (!approveUser) {
       return <Loading />;
     }
+  }
+
+  if (approveUser !== "Admin" && !approveUser["Company Name"]) {
+    return <CompanyNameInputForm />;
   }
 
   if (loading) {

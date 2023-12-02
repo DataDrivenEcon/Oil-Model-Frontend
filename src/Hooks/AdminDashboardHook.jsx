@@ -41,9 +41,7 @@ const useFetchApproveUser = async (email) => {
         }
       );
       const data = await response.json();
-      if (data.data.length > 0) {
-        return data.data[0].membership_status;
-      }
+      return data.data[0];
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
