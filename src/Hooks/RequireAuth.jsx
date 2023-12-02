@@ -19,7 +19,15 @@ const RequireAuth = ({ children }) => {
     fetchApproveUsers();
   }, [user]);
 
-  if (!approveUser || approveUser) {
+  if (
+    approveUser &&
+    approveUser !== "Admin" &&
+    approveUser?.["Company Name"] === null
+  ) {
+    return <CompanyNameInputForm />;
+  }
+
+  if (approveUser) {
     if (approveUser?.membership_status === "closed") {
       return <h1>your not allow to use this website</h1>;
     } else if (approveUser?.membership_status === "pending") {
@@ -29,13 +37,7 @@ const RequireAuth = ({ children }) => {
           approve you as soon as possible
         </h1>
       );
-    } else if (!approveUser) {
-      return <Loading />;
     }
-  }
-
-  if (approveUser !== "Admin" && !approveUser["Company Name"]) {
-    return <CompanyNameInputForm />;
   }
 
   if (loading) {
