@@ -1,6 +1,7 @@
+import React from "react";
 import { useEffect } from "react";
 import Navbar from "./Navbar.jsx";
-import "../style/heroSection.css";
+
 const HeroSection = () => {
   useEffect(() => {
     const fadeUpText = document.getElementById("fadeUpText");
@@ -9,6 +10,7 @@ const HeroSection = () => {
   return (
     <div
       id='heroSection'
+      data-testid='heroSection'
       className="bg-[url('/images/Home.png')] w-full bg-no-repeat bg-center bg-cover"
     >
       <Navbar />

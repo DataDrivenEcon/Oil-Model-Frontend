@@ -3,6 +3,7 @@ import auth from "../firebase.init";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
 import UserProfile from "./UserProfile";
+import React from "react";
 
 const Navbar = () => {
   const [user] = useAuthState(auth);
