@@ -1,6 +1,7 @@
 // import { FaTwitter } from "react-icons/fa";
 // import { IoLogoFacebook } from "react-icons/io";
 // import { BsYoutube } from "react-icons/bs";
+import React from "react";
 const AboutUs = () => {
   return (
     <div id='about' className='flex flex-col items-center bg-[#888888da]'>
@@ -93,6 +94,7 @@ const AboutUs = () => {
             <img
               src='./images/team5-2.jpg'
               className='rounded-none lg:rounded-lg shadow-2xl hidden lg:block'
+              alt='profile picture'
             />
           </div>
         </div>
