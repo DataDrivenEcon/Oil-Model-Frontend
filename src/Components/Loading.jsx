@@ -1,3 +1,5 @@
+import React from "react";
+
 const Loading = () => {
   return (
     <div className='h-screen bg-white'>
@@ -5,7 +7,7 @@ const Loading = () => {
         <img
           className='h-16 w-16'
           src='https://icons8.com/preloaders/preloaders/1488/Iphone-spinner-2.gif'
-          alt=''
+          alt='spiner'
         />
       </div>
     </div>
