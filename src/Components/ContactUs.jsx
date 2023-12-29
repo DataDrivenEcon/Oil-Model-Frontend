@@ -2,6 +2,7 @@ import { IoMdPaperPlane } from "react-icons/io";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { BsTelephoneFill } from "react-icons/bs";
 import { HiOutlineMail } from "react-icons/hi";
+import React from "react";
 const ContactUs = () => {
   return (
     <div
