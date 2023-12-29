@@ -60,7 +60,7 @@ const Navbar = () => {
                 <a href='#Testimonials'>Testimonials</a>
               </li>
               {user ? (
-                <UserProfile user={user} admin={admin} />
+                <UserProfile />
               ) : (
                 <li className='border-1 border-[#ffa500] font-inter font-semibold text-white capitalize cursor-pointer btn btn-outline hover:bg-[#ffa500]'>
                   <Link to='/login'>Log in</Link>
