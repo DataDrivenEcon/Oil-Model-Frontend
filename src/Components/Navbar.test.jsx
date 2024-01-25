@@ -12,7 +12,7 @@ describe("Navbar", () => {
         </Router>
       );
     });
-    expect(screen.getByText("Brand Name")).toBeInTheDocument();
+    expect(screen.getByText("ROAD MOBILITY")).toBeInTheDocument();
     expect(screen.getByText("Home")).toBeInTheDocument();
     expect(screen.getByText("Key Benefits")).toBeInTheDocument();
     expect(screen.getByText("About")).toBeInTheDocument();

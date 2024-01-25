@@ -38,7 +38,7 @@ const Navbar = () => {
         <div className='navbar'>
           <div className='flex-1'>
             <a className='normal-case font-semibold text-white text-xl cursor-pointer'>
-              Brand Name
+              ROAD MOBILITY
             </a>
           </div>
           <div className='flex-none'>

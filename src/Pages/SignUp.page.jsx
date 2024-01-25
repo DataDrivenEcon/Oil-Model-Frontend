@@ -80,7 +80,7 @@ const SignUp = () => {
       >
         <div className='w-full h-100'>
           <Link to={"/"} className='text-3xl font-inter font-semibold'>
-            Brand Name
+            ROAD MOBILITY
           </Link>
           <h1 className='text-xl md:text-2xl font-bold leading-tight mt-2'>
             Log in to your account
@@ -178,7 +178,7 @@ const SignUp = () => {
           </button>
 
           <p className='mt-8 text-center'>
-           Already have an account? Please{" "}
+            Already have an account? Please{" "}
             <Link
               to={"/login"}
               className='text-blue-500 hover:text-blue-700 font-semibold'

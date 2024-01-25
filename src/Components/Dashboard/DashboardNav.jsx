@@ -7,7 +7,7 @@ const DashboardNav = () => {
         <div className='navbar rounded-lg  px-2'>
           <div className='flex-1'>
             <Link to='/' className='text-xl capitalize font-semibold'>
-              brand name
+              ROAD MOBILITY
             </Link>
           </div>
           <div className='flex-none gap-2'>
