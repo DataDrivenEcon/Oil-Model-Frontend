@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import OurProducts from "../Components/OurProducts";
+import ApplicationsSection from "../Components/ApplicationSection";
 
 const Home = () => {
   useEffect(() => {
@@ -20,6 +21,7 @@ const Home = () => {
       <HeroSection></HeroSection>
       <OurProducts></OurProducts>
       <KeyBenefits></KeyBenefits>
+      <ApplicationsSection />
       <AboutUs></AboutUs>
       <Testimonials></Testimonials>
       <ContactUs></ContactUs>
