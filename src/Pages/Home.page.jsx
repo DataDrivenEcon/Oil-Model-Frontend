@@ -7,6 +7,7 @@ import Footer from "../Components/Footer";
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import OurProducts from "../Components/OurProducts";
 
 const Home = () => {
   useEffect(() => {
@@ -17,6 +18,7 @@ const Home = () => {
   return (
     <>
       <HeroSection></HeroSection>
+      <OurProducts></OurProducts>
       <KeyBenefits></KeyBenefits>
       <AboutUs></AboutUs>
       <Testimonials></Testimonials>
