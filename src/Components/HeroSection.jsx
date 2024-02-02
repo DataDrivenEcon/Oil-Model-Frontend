@@ -11,7 +11,7 @@ const HeroSection = () => {
     <div
       id='heroSection'
       data-testid='heroSection'
-      className="bg-[url('/images/Home.png')] w-full bg-no-repeat bg-center bg-cover"
+      className="bg-[url('/images/Home2.png')] w-full bg-no-repeat bg-cover"
     >
       <Navbar />
 
@@ -19,20 +19,26 @@ const HeroSection = () => {
         <div className='hero min-h-[92vh] justify-start'>
           <div className='hero-content flex-col lg:flex-row-reverse'>
             <div>
-              <h1 className='text-7xl font-bold text-white'>
-                Leverage Your Expertise with Premium <br />
+              <h1 className='text-5xl font-bold text-white'>
+                Elevate Your Online Insights: Introducing <br />
                 <span id='fadeUpText' className='text-[#ffa500]'>
-                  Oil Economics
-                </span>{" "}
-                Data.
+                  Road Mobility
+                </span>
+                - Your Real-Time Data Solution
+                <br />
               </h1>
               <p className='py-4 text-white text-[18px]'>
-                Welcome to OilData Solutions, the premier platform for unlocking
-                the full potential of oil economics data. <br /> Whether you're
-                an experienced oil economist, a research institution, <br /> or
-                an industry professional, our comprehensive data sets will
-                empower you to <br /> make informed decisions, gain valuable
-                insights, and stay ahead of the competition.
+                We are a newly formed company. As former analysts of gasoline
+                demand, <br /> our traditional tools for analyzing market
+                conditions during Covid proved <br /> to be unsuitable to market
+                conditions at that time. Traditional analysis <br /> uses
+                historical data to model future developments. Analytic tools
+                like econometric <br /> models, time series analysis and even AI
+                were totally inadequate to the major and <br /> unprecedented
+                changes that Covid wrought on U.S. society. Only real time data
+                would prove to be useful. <br /> In that spirit, we have created
+                a data set of mobility using real time data that is independent
+                of history.
               </p>
               <button className='bg-[#ffa500] py-2 px-4 text-white font-inter'>
                 More Info
